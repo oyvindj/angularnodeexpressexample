@@ -1,0 +1,75 @@
+<html ng-app="clientApp">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/bootstrap.min.js"></script>
+<script src="/lib/underscore-min.js"></script>
+<script src="/lib/angular-1.2.14.js"></script>
+<script src="/lib/angular-ui-router.min.js"></script>
+<script src="/js/scripts.js"></script>
+<script src="/js/client.js"></script>
+<script>
+$(document).ready(function() {
+    $.get('https://angularnodeexpressexample-c9-oyvindj_1.c9.io/foos', function( data ) {
+        $("#result").html( data );
+    });
+});
+
+</script>
+</head>
+<body>
+    <h3>Angular - Node.js - Coffeescript - Express - MongoDB Example </h3>
+    <p>This example demonstrates a Angular webapp served by a Node.js application on the server
+        using Express. The Angular webapp communicates with the Node.js apps services through the Angular http service. All code is written in Coffeescript.
+    </p>
+    
+    <p>The Coffeescript in the client directory must be compiled from the terminal with
+        the command "coffee -c client.coffee ..." 
+    </p>
+    
+    <p>Follow this link to see the <a href="commands.html">commands</a> used to set up and run this example 
+    applicaiton on Cloud9
+    </p>
+    
+    <h4>First we call our Node.js service with JQuery Ajax</h4>
+    <div><span id="result"></span></div>
+    
+    <h4>Then we call a Coffeescript function from our HTML</h4>
+    <div><input onclick='show_alert()' type='button' value='Show alert box' /></div>
+        
+    <h4>We verify that Angular.js is correctly installed</h4>
+    <div><p>This is the {{'test' + '!'}} If you see brackets something went wrong...</p></div>
+    
+    <h4>Then we retrieve a list of Foos from our Coffeescript Angular controller</h4>
+    <div ng-controller="ClientCtrl">
+        
+        <div class="row">
+            <ul class="nav nav-pills">
+                <li><a href="#/home">Home</a></li>
+                <li><a href="#/list">list</a></li>
+            </ul>
+        </div>
+        
+        <div ui-view>This text should be replaced by UI-Router</div>
+    
+        <div>
+        <br/>
+        <ul>
+            <li ng-repeat="foo in foos">
+            {{foo.name}} &nbsp; <button ng-click="deleteFoo(foo._id)"/>Delete</button>
+            </li>
+        </ul>
+        </div>
+        <h4>Here are the unparsed Foo objects from the Mongo DB</h4>
+        <div>Message: {{message}}</div>
+        <div>Message2: {{message2}}</div>
+        
+        <h4>Post a new Foo to the Node.js service that adds a new name to the Mongo DB collection</h4>
+        <div><input type="text" ng-model="newName"><button ng-click="addFoo()"/>Add New Foo</div>
+    </div>
+    
+</body>
+</html>
