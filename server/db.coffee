@@ -25,23 +25,16 @@ db.insert = (db, collectionName, name, callback) ->
 db.delete = (db, collectionName, id, callback) ->
     collection = db.collection(collectionName)
     collection.remove({_id: new mongodb.ObjectID(id)}, (err, collection) ->
-        console.log 'db err: ' + err
-        console.log 'db collection: ' + collection
         callback(collection)
     )
 
 
 db.getAll = (db, collectionName, callback) ->
     collection = db.collection(collectionName)
-    console.log 'collection: ' + collection
-    
     collection.count((err, count) ->
-        console.log("There are " + count + " records in the test collection. Here they are:")
         items = []
         collection.find().each((err, item) ->
             if(item != null)
-                console.dir(item);
-                console.log("created at " + new Date(item._id.generationTime) + "\n")
                 items.push item
             else
                 callback(items)

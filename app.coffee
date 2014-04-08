@@ -1,12 +1,8 @@
 http = require "http"
 express = require "express"
 path = require 'path'
-db = require './db'
-#shared = require './shared'
-#cons = require 'consolidate'
-#serverauth = require './serverauth'
-passport =  require 'passport'
-LocalStrategy = require('passport-local').Strategy
+db = require './server/db'
+authentication = require './server/authentication'
 
 app = express()
 server = http.createServer(app)
@@ -16,72 +12,24 @@ app.use(express.urlencoded())
 
 # required for passport
 app.use(express.cookieParser())
-app.use(express.session({ secret: 'ilovescotchscotchyscotchscotch' })) # session secret
-app.use(passport.initialize())
-app.use(passport.session()) # persistent login sessions
-#app.use(flash()) # use connect-flash for flash messages stored in session
+app.use(express.session({ secret: 'ilovescotchscotchyscotchscotch' }))
+app.use(authentication.passport.initialize())
+app.use(authentication.passport.session())
 
 #for routing middleware
 #app.use(express.bodyParser())
 #app.use(express.methodOverride())
 app.use(app.router)
 
-
-users = [
-    { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
-  , { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com' }
-]
-
-findByUsername = (username, callback) ->
-    for user in users
-        if (user.username == username)
-            return callback(null, user)
-    return callback(null, null)
-
-findById = (id, callback) ->
-    idx = id - 1
-    if(users[idx])
-        callback(null, users[idx])
-    else
-        callback(new Error('User ' + id + ' does not exist'))
-    
-passport.serializeUser((user, done) ->
-    done(null, user.id)
-)
-passport.deserializeUser((id, done) ->
-    findById(id, (err, user) ->
-        done(err, user)
-    )
-)
-
-passport.use(new LocalStrategy((username, password, done) ->
-    console.log 'in doLogin...'
-    findByUsername(username, (err, user) ->
-        if (err) 
-            return done(err)
-        if (!user) 
-            return done(null, false, { message: 'Unknown user ' + username })
-        if (user.password != password) 
-            return done(null, false, { message: 'Invalid password' })
-        return done(null, user)
-    )
-))
-
-isLoggedIn = (req, res, next) ->
-	if (req.isAuthenticated())
-		return next();
-	res.send('access denied')
-
 module.exports = server
 
-app.post('/login', passport.authenticate('local', {failureRedirect: '/'}), (req, res) -> res.redirect('/'))
+app.post('/login', authentication.login(), (req, res) -> res.redirect('/'))
 
 app.get('/logout', (req, res) ->
-    req.logout()
-    res.redirect('/')
+  authentication.logout(res, req)
 )
 
-app.get('/foos', isLoggedIn, (req, res) ->
+app.get('/foos', authentication.isLoggedIn, (req, res) ->
     console.log 'getting foos for user: '
     console.log req.user
     db.connect((exampleDb) ->

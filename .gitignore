@@ -3,9 +3,9 @@ backup/
 node_modules/
 app.js
 db.js
-serverauth.js
-shared.js
-server.js
+authentication.js
+localserver.js
+client/js/*.js
 angularnodeexpressexample.iml
 angularnodeexpressexample.ipr
 angularnodeexpressexample.iws
