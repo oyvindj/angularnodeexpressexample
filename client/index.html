@@ -9,17 +9,11 @@
 <script src="/lib/underscore-min.js"></script>
 <script src="/lib/angular-1.2.14.js"></script>
 <script src="/lib/angular-ui-router.min.js"></script>
+<script src="/lib/angular-cookies.min.js"></script>
 <script src="/js/scripts.js"></script>
 <script src="/js/client.js"></script>
-<script>
-$(document).ready(function() {
-    $.get('https://angularnodeexpressexample-c9-oyvindj_1.c9.io/foos', function( data ) {
-        $("#result").html( data );
-    });
-});
-
-</script>
 </head>
+
 <body>
     <h3>Angular - Node.js - Coffeescript - Express - MongoDB Example </h3>
     <p>This example demonstrates a Angular webapp served by a Node.js application on the server
@@ -34,10 +28,7 @@ $(document).ready(function() {
     applicaiton on Cloud9
     </p>
     
-    <h4>First we call our Node.js service with JQuery Ajax</h4>
-    <div><span id="result"></span></div>
-    
-    <h4>Then we call a Coffeescript function from our HTML</h4>
+    <h4>We call a Coffeescript function from our HTML</h4>
     <div><input onclick='show_alert()' type='button' value='Show alert box' /></div>
         
     <h4>We verify that Angular.js is correctly installed</h4>
@@ -49,9 +40,11 @@ $(document).ready(function() {
         <div class="row">
             <ul class="nav nav-pills">
                 <li><a href="#/home">Home</a></li>
-                <li><a href="#/list">list</a></li>
+                <li><a href="#/list">List</a></li>
             </ul>
         </div>
+        
+        <h4>Welcome {{loggedInUser}} ({{loggedInEmail}}) logged in: {{isLoggedIn}}</h4>
         
         <div ui-view>This text should be replaced by UI-Router</div>
     

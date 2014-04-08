@@ -5,8 +5,9 @@
   clientApp = angular.module('clientApp', ['ui.router']);
 
   clientApp.config(function($stateProvider, $urlRouterProvider) {
+    console.log('initializing routes...');
     $urlRouterProvider.otherwise("/home");
-    return $stateProvider.state('index', {
+    $stateProvider.state('index', {
       url: '/',
       templateUrl: 'templates/home.html'
     }).state('home', {
@@ -23,27 +24,85 @@
         return $scope.item = $stateParams.item;
       }
     });
+    return console.log('routes initialized...');
   });
 
-  clientApp.controller('ClientCtrl', function($scope, $http) {
-    $scope.phones = [
-      {
-        'name': 'Nexus S',
-        'snippet': 'Fast just got faster with Nexus S.'
-      }, {
-        'name': 'Motorola XOOM™ with Wi-Fi',
-        'snippet': 'The Next, Next Generation tablet.'
-      }, {
-        'name': 'MOTOROLA XOOM™',
-        'snippet': 'The Next, Next Generation tablet.'
-      }
-    ];
+  clientApp.controller('ClientCtrl', function($scope, $http, $location) {
+    var addAddress, baseUrl, getFoos, getLoginStatus;
     $scope.message = null;
     $scope.foos = [];
-    return $http.get('https://angularnodeexpressexample-c9-oyvindj_1.c9.io/foos').success(function(data) {
-      $scope.message = data;
-      return $scope.foos = data;
-    });
+    $scope.newName = '';
+    baseUrl = 'https://angularnodeexpressexample-c9-oyvindj_1.c9.io';
+    $scope.addFoo = function() {
+      var postData;
+      postData = {
+        name: $scope.newName
+      };
+      return $http.post(baseUrl + '/foos', postData).success(function(data) {
+        $scope.message2 = 'insert succesful...';
+        $scope.newName = '';
+        return getFoos();
+      });
+    };
+    addAddress = function() {
+      var postData;
+      postData = {
+        name: 'Stasjonsveien 10'
+      };
+      return $http.post(baseUrl + '/addresses', postData).success(function(data) {});
+    };
+    getFoos = function() {
+      return $http.get(baseUrl + '/foos').success(function(data) {
+        $scope.message = data;
+        return $scope.foos = data;
+      });
+    };
+    $scope.username = '';
+    $scope.password = '';
+    $scope.rememberme = false;
+    $scope.login = function() {
+      var user;
+      user = {
+        username: $scope.username,
+        password: $scope.password,
+        rememberme: $scope.rememberme
+      };
+      return $http.post(baseUrl + '/login', user).success(function(user) {
+        getLoginStatus();
+        return window.location = '/';
+      }).error(function(err) {
+        return console.log("Failed to login: " + err);
+      });
+    };
+    $scope.logout = function() {
+      return $http.get(baseUrl + '/logout').success(function(data) {
+        getLoginStatus();
+        return $location.path('/');
+      });
+    };
+    getLoginStatus = function() {
+      return $http.get(baseUrl + '/user').success(function(user) {
+        console.log('user: ' + user);
+        if (user) {
+          $scope.loggedInUser = user.username;
+          $scope.loggedInEmail = user.email;
+          return $scope.isLoggedIn = true;
+        } else {
+          $scope.loggedInUser = 'Guest';
+          $scope.loggedInEmail = '-';
+          return $scope.isLoggedIn = false;
+        }
+      });
+    };
+    $scope.deleteFoo = function(id) {
+      console.log('client deleting foo with id ' + id);
+      return $http["delete"](baseUrl + '/foos/' + id).success(function(data) {
+        console.log('client deleted foo with id ' + id + ', data: ' + data);
+        return $scope.foos = data;
+      });
+    };
+    getFoos();
+    return getLoginStatus();
   });
 
   clientApp.controller('ListCtrl', function($scope, $http) {
@@ -60,7 +119,7 @@
         name: 'Ham'
       }
     ];
-    return $scope.selectItem = function(selectedItem) {
+    $scope.selectItem = function(selectedItem) {
       return _($scope.shoppingList).each(function(item) {
         item.selected = false;
         if (selectedItem === item) {
@@ -68,6 +127,7 @@
         }
       });
     };
+    return $scope.shoppingList[0].selected = true;
   });
 
 }).call(this);
