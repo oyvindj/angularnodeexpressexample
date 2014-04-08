@@ -1,4 +1,3 @@
-mongoose = require("mongoose")
 _ = require("underscore")
 mongodb = require('mongodb')
 
