@@ -1,3 +1,11 @@
 data/
 backup/
 node_modules/
+app.js
+db.js
+serverauth.js
+shared.js
+server.js
+angularnodeexpressexample.iml
+angularnodeexpressexample.ipr
+angularnodeexpressexample.iws
