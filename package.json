@@ -9,5 +9,8 @@
         "underscore" : "~1.6.0",
         "mongodb" : "~1.4.0",
         "coffee-script" : "~1.7.1"
+    },
+    "engines": {
+        "node": "0.10.26"
     }
 }

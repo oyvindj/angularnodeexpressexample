@@ -1,4 +1,4 @@
 require("coffee-script");
 
 var app = require("./app");
-app.listen();
+app.listen(3000);

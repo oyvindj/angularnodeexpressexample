@@ -32,7 +32,9 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
 
     $scope.newName = ''
     
-    baseUrl = 'https://angularnodeexpressexample-c9-oyvindj_1.c9.io'
+    #baseUrl = 'https://angularnodeexpressexample-c9-oyvindj_1.c9.io'
+    baseUrl = 'http://localhost:3000'
+
     $scope.addFoo = () ->
         postData = {name: $scope.newName}
         $http.post(baseUrl + '/foos', postData).success((data) ->
