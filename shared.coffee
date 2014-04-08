@@ -1,24 +1,19 @@
-app = angular.module 'roles', []
+shared = {}
 
-app.factory('roles', ->
-    roles = {}
-  
-    userRoles = {
-        public: 1, # 001
-        user:   2, # 010
-        admin:  4  # 100
-    }
+userRoles = {
+    public: 1
+    user:   2
+    admin:  4
+}
+accessLevels = {
+    public: (userRoles.public | userRoles.user | userRoles.admin) 
+    anon:   userRoles.public
+    user:   (userRoles.user | userRoles.admin)                    
+    admin:  userRoles.admin
+}
 
-    roles.userRoles = userRoles;
-    roles.accessLevels = {
-        public: userRoles.public | # 111
-                userRoles.user   | 
-                userRoles.admin,   
-        anon:   userRoles.public,  # 001
-        user:   userRoles.user |   # 110
-                userRoles.admin,                    
-        admin:  userRoles.admin    # 100
-    }
-    
-    return roles
-)
+shared.userRoles = userRoles
+
+shared.accessLevels = accessLevels
+
+module.exports = shared
