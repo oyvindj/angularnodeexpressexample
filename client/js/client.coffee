@@ -29,11 +29,20 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
         
     $scope.message = null
     $scope.foos = []
-
     $scope.newName = ''
-    
+    $scope.username = ''
+    $scope.password = ''
+    $scope.verifyPassword = ''
+    $scope.rememberme = false
+    $scope.isLogin = true
+
     #baseUrl = 'https://angularnodeexpressexample-c9-oyvindj_1.c9.io'
     baseUrl = 'http://localhost:3000'
+
+    $scope.isLogin = () ->
+        return "" + $scope.isLogin
+    $scope.setLogin = (isLogin) ->
+        $scope.isLogin = isLogin
 
     $scope.addFoo = () ->
         postData = {name: $scope.newName}
@@ -43,19 +52,19 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
             getFoos()
         )
         
-    addAddress = ->
-        postData = {name: 'Stasjonsveien 10'}
-        $http.post(baseUrl + '/addresses', postData).success((data) ->)
-    
     getFoos = ->
         $http.get(baseUrl + '/foos').success((data) ->
             $scope.message = data
             $scope.foos = data
         )
-    
-    $scope.username = ''
-    $scope.password = ''
-    $scope.rememberme = false
+
+    $scope.deleteFoo = (id) ->
+      console.log 'client deleting foo with id ' + id
+      $http.delete(baseUrl + '/foos/' + id).success((data) ->
+        console.log 'client deleted foo with id ' + id + ', data: ' + data
+        $scope.foos = data
+      )
+
     $scope.login = () ->
         user = {username: $scope.username, password: $scope.password, rememberme: $scope.rememberme}
         $http.post(baseUrl + '/login', user).success((user) ->
@@ -81,13 +90,6 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
                 $scope.loggedInUser = 'Guest'
                 $scope.loggedInEmail = '-'
                 $scope.isLoggedIn = false
-        )
-
-    $scope.deleteFoo = (id) ->
-        console.log 'client deleting foo with id ' + id
-        $http.delete(baseUrl + '/foos/' + id).success((data) ->
-            console.log 'client deleted foo with id ' + id + ', data: ' + data
-            $scope.foos = data
         )
 
     getFoos()

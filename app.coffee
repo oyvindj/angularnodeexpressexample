@@ -26,7 +26,7 @@ module.exports = server
 app.post('/login', authentication.login(), (req, res) -> res.redirect('/'))
 
 app.get('/logout', (req, res) ->
-  authentication.logout(res, req)
+  authentication.logout(req, res)
 )
 
 app.get('/foos', authentication.isLoggedIn, (req, res) ->
