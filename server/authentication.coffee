@@ -73,7 +73,7 @@ init = (app) ->
   )
 
   app.post('/users', (req, res) ->
-    data = {username: req.body.username, password: req.body.password, email: req.body.email}
+    data = {username: req.body.username, password: req.body.password, email: req.body.email, isAdmin: false}
     persist.insertDb(req, res, 'User', data)
   )
 
