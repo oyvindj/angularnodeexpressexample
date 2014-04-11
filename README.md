@@ -10,7 +10,8 @@ RUNNING LOCALLY
 4) open "http://localhost:3000" in a browser
 
 RUNNING ON CLOUD9
-1) Open the project on Cloud 9
+1) Open the project on Cloud 9: https://c9.io/oyvindj_1/angularnodeexpressexample
+1b) If necessary run command "git pull" to get the latest updates
 2) From a terminal run command ". ./mongod" to start Mongo DB
 3) Run command "coffee -wc client/js/*.coffee"
 4) Select the "server.js" file and click the "Run" button
