@@ -5,7 +5,7 @@ Sample project integrating an Angular JS client (using ui.router) with a Node ba
 
 RUNNING LOCALLY
 1) Make sure Mongo DB is running
-2) run command "coffee -wc *.coffee server/*.coffee client/js/*.coffee"
+2) run command <code>"coffee -wc *.coffee server/*.coffee client/js/*.coffee"</code>
 3) run command "nodemon localserver.js"
 4) open "http://localhost:3000" in a browser
 
