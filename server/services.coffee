@@ -6,29 +6,20 @@ services = {}
 entities = ['Foo', 'Bar']
 
 init = (app) ->
-  for entity in entities
-      do (entity) ->
-          console.log 'creating ' + entity + ' services...'
-          serviceName = '/'+ entity + 's'
-          console.log 'creating ' + serviceName
-          app.get(serviceName, authentication.isLoggedIn, (req, res) ->
-              console.log 'calling ' + serviceName
-              persist.getAllDb(req, res, entity)
-          )
+  app.get('/myfoos', authentication.isLoggedIn, (req, res) ->
+    persist.getAllDb(req, res, 'Myfoo')
+  )
 
-          app.post(serviceName, (req, res) ->
-              console.log 'calling ' + serviceName
-              name = req.body.name
-              data = {name: name}
-              persist.insertDb(req, res, entity, data)
-          )
+  app.post('/myfoos', (req, res) ->
+    name = req.body.name
+    data = {name: name}
+    persist.insertDb(req, res, 'Myfoo', data)
+  )
 
-          serviceName = serviceName + '/:id'
-          console.log 'creating ' + serviceName
-          app.delete(serviceName, (req, res) ->
-              console.log 'calling ' + serviceName
-              persist.deleteDb(req, res, entity)
-          )
+  app.delete('/myfoos/:id', (req, res) ->
+    persist.deleteDb(req, res, 'Myfoo')
+  )
+
 
 services.init = init
 module.exports = services

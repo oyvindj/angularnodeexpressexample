@@ -3,6 +3,7 @@ express = require "express"
 path = require 'path'
 persist = require './server/persist'
 authentication = require './server/authentication'
+autoservices = require './server/autoservices'
 services = require './server/services'
 
 app = express()
@@ -23,4 +24,5 @@ app.use(app.router)
 module.exports = server
 
 authentication.init(app)
+autoservices.init(app)
 services.init(app)
