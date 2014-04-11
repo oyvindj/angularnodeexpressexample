@@ -1,4 +1,5 @@
 passport =  require 'passport'
+persist = require './persist'
 LocalStrategy = require('passport-local').Strategy
 
 users = [
@@ -53,10 +54,41 @@ logout = (req, res) ->
   req.logout()
   res.redirect('/')
 
+getUser = (req) ->
+  return req.user
+
+init = (app) ->
+  app.post('/login', login(), (req, res) -> res.redirect('/'))
+
+  app.get('/logout', (req, res) ->
+    logout(req, res)
+  )
+
+  app.get('/user', (req, res) ->
+    res.send getUser(req)
+  )
+
+  app.get('/users', (req, res) ->
+    persist.getAllDb(req, res, 'User')
+  )
+
+  app.post('/users', (req, res) ->
+    data = {username: req.body.username, password: req.body.password, email: req.body.email}
+    persist.insertDb(req, res, 'User', data)
+  )
+
+  app.delete('/users/:id', (req, res) ->
+    persist.deleteDb(req, res, 'User')
+  )
+
+  app.get('/users/:id', (req, res) ->
+    persist.findByIdDb(req, res, 'User')
+  )
 
 
 authentication = {}
 
+authentication.init = init
 authentication.users = users
 authentication.findByUsername = findByUsername
 authentication.findById = findById

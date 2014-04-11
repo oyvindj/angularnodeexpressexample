@@ -8,19 +8,10 @@ getUser = (req) ->
 
 db.connect = (callback) ->
     MongoClient = require('mongodb').MongoClient
-
     MongoClient.connect("mongodb://localhost/exampledb", (err, db) ->
         console.log 'err: ' + err
         console.log 'db: ' + db
         callback(db)
-    )
-
-db.insertName = (db, collectionName, req, callback) ->
-    name = req.body.name
-    userid = req.user.id
-    collection = db.collection(collectionName)
-    collection.insert({name: name, userid: userid}, (err, names) ->
-        callback(name)
     )
 
 db.insert = (db, collectionName, data, req, callback) ->
