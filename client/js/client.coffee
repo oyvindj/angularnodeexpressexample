@@ -4,32 +4,66 @@ clientApp = angular.module('clientApp', ['ui.router', 'model'])
 clientApp.config(($stateProvider, $urlRouterProvider) ->
     $urlRouterProvider.otherwise("/home")
     $stateProvider
-        .state('index', {
-            url: '/'
-            templateUrl: 'templates/home.html'
+      .state('root', {
+          url: ''
+          views: {
+            "menu": {
+              templateUrl: 'templates/menu.html'
+            },
+            "footer": {
+              templateUrl: "templates/footer.html"
+            },
+            "container@": {
+              templateUrl: 'templates/home.html'
+            }
+          }
         })
-        .state('home', {
+        .state('root.home', {
             url: '/home'
-            templateUrl: 'templates/home.html'
-        })
-        .state('list', {
+            views: {
+              "container@": {
+                templateUrl: 'templates/home.html'
+              }
+            }
+          })
+        .state('root.list', {
             url: '/list'
-            templateUrl: 'templates/list.html'
-            controller: 'ListCtrl'
+            views: {
+              "container@": {
+                templateUrl: 'templates/list.html'
+                controller: 'ListCtrl'
+              }
+            }
         })
-        .state('list.item', {
+        .state('root.list.item', {
             url: '/:item'
             templateUrl: 'templates/list.item.html'
             controller: ($scope, $stateParams) ->
                 $scope.item = $stateParams.item
         })
-        .state('profile', {
+        .state('root.profile', {
             url: '/profile'
-            templateUrl: 'templates/profile.html'
+            views: {
+              "container@": {
+                templateUrl: 'templates/profile.html'
+              }
+            }
         })
-        .state('users', {
+        .state('root.users', {
             url: '/users'
-            templateUrl: 'templates/users.html'
+            views: {
+              "container@": {
+                templateUrl: 'templates/users.html'
+              }
+            }
+        })
+        .state('root.contactus', {
+          url: '/contactus'
+          views: {
+            "container@": {
+              templateUrl: 'templates/contactus.html'
+            }
+          }
         })
 )
 
@@ -130,6 +164,10 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
         user = {username: $scope.username, password: $scope.password, email: $scope.email}
         $http.post(baseUrl + '/users', user).success((user) ->
             getUsers()
+            $scope.username = ''
+            $scope.email = ''
+            $scope.password = ''
+            $scope.verifyPassword = ''
         ).error((err) ->
           console.log "Failed to add user: " + err
         )
