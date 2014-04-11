@@ -3,9 +3,8 @@ mongodb = require('mongodb')
 
 db = {}
 
-db.hello = ->
-    console.log 'hello from db...'
-    
+getUser = (req) ->
+    return req.user
 
 db.connect = (callback) ->
     MongoClient = require('mongodb').MongoClient
@@ -16,13 +15,25 @@ db.connect = (callback) ->
         callback(db)
     )
 
-db.insert = (db, collectionName, name, callback) ->
+db.insertName = (db, collectionName, req, callback) ->
+    name = req.body.name
+    userid = req.user.id
     collection = db.collection(collectionName)
-    collection.insert({name: name}, (err, names) ->
+    collection.insert({name: name, userid: userid}, (err, names) ->
         callback(name)
     )
-    
+
+db.insert = (db, collectionName, data, req, callback) ->
+  userid = req.user.id
+  data.userid = userid
+  data.timestamp = (new Date()).getTime()
+  collection = db.collection(collectionName)
+  collection.insert(data, (err, names) ->
+    callback(data)
+  )
+
 db.delete = (db, collectionName, id, callback) ->
+    console.log 'db delete ' + collectionName + ' ' + id
     collection = db.collection(collectionName)
     collection.remove({_id: new mongodb.ObjectID(id)}, (err, collection) ->
         callback(collection)
@@ -41,5 +52,10 @@ db.getAll = (db, collectionName, callback) ->
                 db.close()
         )
     )
-    
+
+db.findById = (db, collectionName, id, callback) ->
+    collection = db.collection(collectionName)
+    item = collection.findOne({_id: id})
+    callback(item)
+
 module.exports = db 

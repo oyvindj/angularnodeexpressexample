@@ -1,7 +1,7 @@
 http = require "http"
 express = require "express"
 path = require 'path'
-db = require './server/db'
+persist = require './server/persist'
 authentication = require './server/authentication'
 
 app = express()
@@ -17,11 +17,12 @@ app.use(authentication.passport.initialize())
 app.use(authentication.passport.session())
 
 #for routing middleware
-#app.use(express.bodyParser())
-#app.use(express.methodOverride())
 app.use(app.router)
 
 module.exports = server
+
+getUser = (req) ->
+    return req.user
 
 app.post('/login', authentication.login(), (req, res) -> res.redirect('/'))
 
@@ -29,54 +30,38 @@ app.get('/logout', (req, res) ->
   authentication.logout(req, res)
 )
 
-app.get('/foos', authentication.isLoggedIn, (req, res) ->
-    console.log 'getting foos for user: '
-    console.log req.user
-    db.connect((exampleDb) ->
-        db.getAll(exampleDb, 'Foo', (items) ->
-            foos = []
-            for item in items
-                foos.push item
-            res.send foos
-        )
-    )
+app.get('/user', (req, res) ->
+  res.send getUser(req)
 )
 
-app.get('/user', (req, res) ->
-    res.send req.user
+app.get('/users', (req, res) ->
+  persist.getAllDb(req, res, 'User')
+)
+
+app.post('/users', (req, res) ->
+  data = {username: req.body.username, password: req.body.password, email: req.body.email}
+  persist.insertDb(req, res, 'User', data)
+)
+
+app.delete('/users/:id', (req, res) ->
+  persist.deleteDb(req, res, 'User')
+)
+
+app.get('/users/:id', (req, res) ->
+  persist.findByIdDb(req, res, 'User')
+)
+
+app.get('/foos', authentication.isLoggedIn, (req, res) ->
+  persist.getAllDb(req, res, 'Foo')
 )
 
 app.post('/foos', (req, res) ->
     name = req.body.name
-    db.connect((exampleDb) ->
-        db.insert(exampleDb, 'Foo', name, (name) -> 
-            console.log 'foo inserted: ' + name
-            res.status 201
-            res.send name
-        )
-    )
+    data = {name: name}
+    persist.insertDb(req, res, 'Foo', data)
 )
 
 app.delete('/foos/:id', (req, res) ->
-    id = req.params.id
-    console.log 'deleting foo id: ' + id
-    db.connect((exampleDb) ->
-        db.delete(exampleDb, 'Foo', id, (collection) ->
-            console.log 'app deleted Foo with id ' + id
-            res.json(true)
-            console.log 'response was sent...'
-        )
-    )
+    persist.deleteDb(req, res, 'Foo')
 )
-
-app.post('/addresses', (req, res) ->
-    name = req.body.name
-    db.connect((exampleDb) ->
-        db.insert(exampleDb, 'Address', name, (name) -> 
-            console.log 'inserted address'
-            res.send(name)
-        )
-    )
-)
-
 

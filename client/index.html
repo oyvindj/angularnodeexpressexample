@@ -11,6 +11,7 @@
 <script src="/lib/angular-ui-router.min.js"></script>
 <script src="/lib/angular-cookies.min.js"></script>
 <script src="/js/scripts.js"></script>
+<script src="/js/model.js"></script>
 <script src="/js/client.js"></script>
 </head>
 
@@ -34,35 +35,37 @@
     <h4>We verify that Angular.js is correctly installed</h4>
     <div><p>This is the {{'test' + '!'}} If you see brackets something went wrong...</p></div>
     
-    <h4>Two templates: Home (with login) and a list of Food</h4>
     <div ng-controller="ClientCtrl">
-        
+        <h4>Welcome {{loggedInUser}} ({{loggedInEmail}}) logged in: {{isLoggedIn}}</h4>
+
+        <h4>Three templates: Home (with login), list of Foods and Profile (for logged in users)</h4>
         <div class="row">
             <ul class="nav nav-pills">
                 <li><a href="#/home">Home/Login</a></li>
                 <li><a href="#/list">List of food</a></li>
+                <li ng-show="isLoggedIn == true"><a href="#/profile">Min Side</a> </li>
+                <li ng-show="isLoggedIn == true"><a href="#/users">Users</a> </li>
             </ul>
         </div>
-        
-        <h4>Welcome {{loggedInUser}} ({{loggedInEmail}}) logged in: {{isLoggedIn}}</h4>
-        
-        <div ui-view>This text should be replaced by UI-Router</div>
+
+        <div ui-view>This text should be replaced by the template selected abover</div>
 
         <h4>Then we retrieve a list of Foos from our Coffeescript Angular controller</h4>
         <div>
         <br/>
         <ul>
             <li ng-repeat="foo in foos">
-            {{foo.name}} &nbsp; <button ng-click="deleteFoo(foo._id)"/>Delete</button>
+            {{foo.name}} &nbsp; {{foo.time}} &nbsp; <button ng-click="deleteFoo(foo.id)"/>Delete</button>
             </li>
         </ul>
         </div>
+
+        <h4>Post a new Foo to the Node.js service that adds a new Foo to the Mongo DB collection</h4>
+        <div><input type="text" ng-model="newName"><button ng-click="addFoo()"/>Add New Foo</div>
+
         <h4>Here are the unparsed Foo objects from the Mongo DB</h4>
         <div>Message: {{message}}</div>
-        <div>Message2: {{message2}}</div>
-        
-        <h4>Post a new Foo to the Node.js service that adds a new name to the Mongo DB collection</h4>
-        <div><input type="text" ng-model="newName"><button ng-click="addFoo()"/>Add New Foo</div>
+
     </div>
     
 </body>

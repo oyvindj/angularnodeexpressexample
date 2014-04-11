@@ -1,4 +1,4 @@
-clientApp = angular.module('clientApp', ['ui.router'])
+clientApp = angular.module('clientApp', ['ui.router', 'model'])
 
 #set up routing
 clientApp.config(($stateProvider, $urlRouterProvider) ->
@@ -23,21 +23,32 @@ clientApp.config(($stateProvider, $urlRouterProvider) ->
             controller: ($scope, $stateParams) ->
                 $scope.item = $stateParams.item
         })
+        .state('profile', {
+            url: '/profile'
+            templateUrl: 'templates/profile.html'
+        })
+        .state('users', {
+            url: '/users'
+            templateUrl: 'templates/users.html'
+        })
 )
 
-clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
+clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
         
     $scope.message = null
     $scope.foos = []
+    $scope.users = []
     $scope.newName = ''
     $scope.username = ''
+    $scope.email = ''
     $scope.password = ''
     $scope.verifyPassword = ''
     $scope.rememberme = false
     $scope.isLogin = true
 
     #baseUrl = 'https://angularnodeexpressexample-c9-oyvindj_1.c9.io'
-    baseUrl = 'http://localhost:3000'
+    #baseUrl = 'http://localhost:3000'
+    baseUrl = ''
 
     $scope.isLogin = () ->
         return "" + $scope.isLogin
@@ -55,14 +66,37 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
     getFoos = ->
         $http.get(baseUrl + '/foos').success((data) ->
             $scope.message = data
-            $scope.foos = data
+            $scope.foos = []
+            for item in data
+                foo = new model.Foo()
+                foo.id = item._id
+                foo.name = item.name
+                foo.userid = item.userid
+                date = new Date(item.timestamp)
+                foo.time = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+                $scope.foos.push foo
         )
 
+    getUsers = ->
+      $http.get(baseUrl + '/users').success((data) ->
+          $scope.message = data
+          $scope.users = []
+          for item in data
+              user = new model.User()
+              user.id = item._id
+              user.username = item.username
+              user.userid = item.userid
+              user.email = item.email
+              date = new Date(item.timestamp)
+              user.time = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+              $scope.users.push user
+      )
+
     $scope.deleteFoo = (id) ->
-      console.log 'client deleting foo with id ' + id
       $http.delete(baseUrl + '/foos/' + id).success((data) ->
         console.log 'client deleted foo with id ' + id + ', data: ' + data
-        $scope.foos = data
+        #$scope.foos = data
+        getFoos()
       )
 
     $scope.login = () ->
@@ -92,7 +126,26 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location) ->
                 $scope.isLoggedIn = false
         )
 
+    $scope.register = () ->
+        user = {username: $scope.username, password: $scope.password, email: $scope.email}
+        $http.post(baseUrl + '/users', user).success((user) ->
+            getUsers()
+        ).error((err) ->
+          console.log "Failed to add user: " + err
+        )
+
+    $scope.deleteUser = (id) ->
+      console.log 'deleting user...'
+      $http.delete(baseUrl + '/users/' + id).success((data) ->
+        #$scope.users = data
+        getUsers()
+      ).error((err) ->
+        console.log "Failed to delete user: " + err
+      )
+
     getFoos()
+    if($scope.isLoggedIn)
+        getUsers()
     getLoginStatus()
 )
 

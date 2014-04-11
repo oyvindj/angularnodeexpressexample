@@ -2,10 +2,12 @@
 
 <div ng-hide="isLoggedIn == true">
     <form ng-submit="login()" ng-controller="ClientCtrl">
+        <!--
         <div>
             <input type="radio" ng-model="isLogin()" ng-value="true" />Login
             <input type="radio" ng-model="isLogin()" ng-value="false" />Register
         </div>
+        -->
         <input type="text" ng-model="username" />
         <input type="password" ng-model="password" />
         <input type="verifyPassword" ng-model="verifyPassword" ng-hide="isLogin" />
