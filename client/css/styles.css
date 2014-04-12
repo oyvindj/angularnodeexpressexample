@@ -74,3 +74,6 @@ table {
 .register-message-panel {
     min-height: 35px;
 }
+.input-text-field {
+    -webkit-border-radius: 10px;
+}
