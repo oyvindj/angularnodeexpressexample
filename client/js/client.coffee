@@ -84,7 +84,7 @@ clientApp.config(($stateProvider, $urlRouterProvider) ->
 )
 
 clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
-        
+    console.log 'starting controller...'
     $scope.message = null
     $scope.foos = []
     $scope.users = []
@@ -171,7 +171,7 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
                 $scope.loggedInEmail = user.email
                 $scope.isLoggedIn = true
             else
-                $scope.loggedInUser = 'Guest'
+                $scope.loggedInUser = 'Gjest'
                 $scope.loggedInEmail = '-'
                 $scope.isLoggedIn = false
         )
@@ -202,6 +202,7 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
     if($scope.isLoggedIn)
         getUsers()
     getLoginStatus()
+    console.log 'ending controller...'
 )
 
 clientApp.controller('ListCtrl', ($scope, $http) ->

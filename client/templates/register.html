@@ -4,11 +4,11 @@
         <div class="register-message-panel"><span id="register-message">{{registerMessage}}</span></div>
         <form ng-submit="register()">
             <table>
-                <tr><td>Username: </td><td><input type="text" ng-model="username" /></td></tr>
-                <tr><td>Email: </td><td><input type="text" ng-model="email" /></td></tr>
-                <tr><td>Password: </td><td><input type="password" ng-model="password" /></td></tr>
-                <tr><td>Verify Password: </td><td><input type="password" ng-model="verifyPassword" /></td></tr>
-                <tr><td colspan="2" style="text-align: center"><input type="submit"value="Register" /></td></tr>
+                <tr><td><input type="text" ng-model="username" autocorrect="off" autocapitalize="off" placeholder="Brukernavn" /></td></tr>
+                <tr><td><input type="text" ng-model="email" autocorrect="off" autocapitalize="off" placeholder="Email" /></td></tr>
+                <tr><td><input type="password" ng-model="password" autocorrect="off" autocapitalize="off" placeholder="Passord" /></td></tr>
+                <tr><td><input type="password" ng-model="verifyPassword" autocorrect="off" autocapitalize="off" placeholder="Verifiser Passord" /></td></tr>
+                <tr><td colspan="1" style="text-align: center"><input class="submit-button" type="submit"value="Registrer" /></td></tr>
             </table>
         </form>
     </div>

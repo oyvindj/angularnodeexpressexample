@@ -2,12 +2,13 @@
     <div class="vertical-spacer-50"></div>
     <div class="login-form">
         <form ng-submit="login()" ng-controller="ClientCtrl">
-            <input id="Username" class="input-text-field" type="text" ng-model="username" autocorrect="off" autocapitalize="off" />
+            <input id="Username" class="input-text-field" type="text" ng-model="username" autocorrect="off" autocapitalize="off" placeholder="Brukernavn"/>
             <br/>
-            <input id="Password" class="input-text-field" type="password" ng-model="password" autocorrect="off" autocapitalize="off" />
-            <div><input type="submit"value="Login" /></div>
+            <input id="Password" class="input-text-field" type="password" ng-model="password" autocorrect="off" autocapitalize="off" placeholder="Passord"/>
+            <div><input class="submit-button" type="submit"value="Logg På" /></div>
         </form>
     </div>
 
 </div>
+
 

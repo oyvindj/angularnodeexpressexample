@@ -77,3 +77,6 @@ table {
 .input-text-field {
     -webkit-border-radius: 10px;
 }
+.submit-button {
+    -webkit-border-radius: 10px;
+}
