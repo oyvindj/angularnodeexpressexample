@@ -1,5 +1,8 @@
 .main-panel {
     width: 320px;
-    height: 356px;
+    height: 440px;
     background-color: white;
+}
+.menu-panel {
+    max-height: 60px;
 }

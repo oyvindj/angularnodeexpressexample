@@ -1,15 +1,15 @@
 <div class="menu-panel">
     <ul class="nav nav-pills">
-        <li><a href="#/home">Home/Login</a></li>
+        <li><a href="#/home">Home</a></li>
         <li><a href="#/list">List of food</a></li>
         <li ng-show="isLoggedIn == true"><a href="#/profile">Min Side</a> </li>
         <li ng-show="isLoggedIn == true"><a href="#/users">Users</a> </li>
 
-        <li><span class="horizontal-menu-spacer" ng-show="isLoggedIn == false">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span></li>
+        <li><span class="horizontal-menu-spacer" ng-show="isLoggedIn == false">a</span></li>
         <li ng-show="isLoggedIn == false" class="menu-link-item"><a href="#/login">Login</a></li>
         <li ng-show="isLoggedIn == false" class="menu-link-item"><a href="#/register">Register</a></li>
 
-        <li><span class="horizontal-menu-spacer" ng-show="isLoggedIn == true">aaaaaaaaaaaaaaaaaaaaaaaaa</span></li>
+        <li><span class="horizontal-menu-spacer" ng-show="isLoggedIn == true">a</span></li>
         <li ng-show="isLoggedIn == true"><a href="" ng-click="logout()">Logout</a></li>
     </ul>
 </div>

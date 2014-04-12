@@ -1,12 +1,11 @@
+html {
+    -webkit-text-size-adjust:auto
+}
 .main-panel {
     background-color: greenyellow;
-    border-color: #000000;
-    border-width: 1px;
-    border-style: solid;
 }
 
 .content-panel {
-    min-height: 300px;
     background-color: lightgoldenrodyellow;
 }
 .menu-panel {
@@ -40,9 +39,8 @@
 .menu-link-panel {
     clear: none;
     float: right;
-    width: 250px;
-
 }
+
 .menu-link-item {
     float: right;
 }
