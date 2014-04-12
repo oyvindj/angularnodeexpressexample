@@ -6,6 +6,7 @@ db.js
 authentication.js
 localserver.js
 client/js/*.js
+server/*.js
 angularnodeexpressexample.iml
 angularnodeexpressexample.ipr
 angularnodeexpressexample.iws
