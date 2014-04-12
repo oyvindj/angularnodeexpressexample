@@ -65,6 +65,22 @@ clientApp.config(($stateProvider, $urlRouterProvider) ->
             }
           }
         })
+        .state('root.login', {
+            url: '/login'
+            views: {
+              "container@": {
+                templateUrl: 'templates/login.html'
+              }
+            }
+        })
+        .state('root.register', {
+            url: '/register'
+            views: {
+              "container@": {
+                templateUrl: 'templates/register.html'
+              }
+            }
+        })
 )
 
 clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
@@ -168,6 +184,7 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
             $scope.email = ''
             $scope.password = ''
             $scope.verifyPassword = ''
+            $scope.registerMessage = 'Registration Successful'
         ).error((err) ->
           console.log "Failed to add user: " + err
         )
