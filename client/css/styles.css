@@ -3,8 +3,8 @@
     border-color: #000000;
     border-width: 1px;
     border-style: solid;
-    width: 640px;
-    height: 960px;
+    /*width: 640px;*/
+    /*height: 960px;*/
 }
 
 .content-panel {
@@ -20,17 +20,6 @@
     color: white;
     padding: 5px;
 }
-.bottom-panel {
-    background-color: white;
-    position: relative;
-    left: -1px;
-    width: 641px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    border-style: dashed;
-    height: 100%;
-}
-
 .users-panel {
     padding: 10px;
 }
