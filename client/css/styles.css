@@ -49,3 +49,44 @@
 .welcome-panel {
     padding: 10px;
 }
+
+.menu-link-panel {
+    clear: none;
+    float: right;
+    width: 250px;
+
+}
+.menu-link-item {
+    float: right;
+}
+.login-panel {
+    padding: 10px;
+    text-align: center;
+}
+.register-panel {
+    padding: 10px;
+    text-align: center;
+}
+.register-form {
+    text-align: center;
+}
+.vertical-spacer-100 {
+    min-height: 100px;
+}
+.vertical-spacer-50 {
+    min-height: 50px;
+}
+.horizontal-menu-spacer {
+    min-width: 200px;
+    color: #000000;
+}
+table {
+    margin: 0 auto;
+}
+#register-message {
+    font-size: 16px;
+    color: orange;
+}
+.register-message-panel {
+    min-height: 35px;
+}
