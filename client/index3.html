@@ -1,0 +1,44 @@
+<html ng-app="clientApp">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-title" content="Timeforing">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <link rel="apple-touch-icon" href="apple-touch-icon-iphone.png">
+    <link rel="apple-touch-startup-image" href="/startup-image.png">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    <link media="only screen and (max-device-width: 480px)" href="/css/small-device.css" type= "text/css" rel="stylesheet">
+    <link media="screen and (min-device-width: 481px)" href="/css/not-small-device.css" type="text/css" rel="stylesheet">
+    <link media="only screen and (-webkit-min-device-pixel-ratio: 2)" href="/css/retina.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+
+
+    <script src="/lib/jquery.min.js"></script>
+    <script src="/lib/bootstrap.min.js"></script>
+    <script src="/lib/underscore-min.js"></script>
+    <script src="/lib/angular-1.2.14.js"></script>
+    <script src="/lib/angular-ui-router.min.js"></script>
+    <script src="/lib/angular-cookies.min.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="/js/jsscripts.js"></script>
+    <script src="/js/model.js"></script>
+    <script src="/js/client.js"></script>
+</head>
+
+<body>
+<div ng-controller="ClientCtrl" class="main-panel">
+
+    <div ui-view="menu"></div>
+    <div class="welcome-panel"><span>Velkommen {{loggedInUser}} ({{loggedInEmail}})</span></div>
+    <div class="content-panel" ui-view="container"></div>
+    <div ui-view="footer"></div>
+    <!--<div class="bottom-panel"></div>-->
+
+
+</div>
+
+</body>
+</html>
