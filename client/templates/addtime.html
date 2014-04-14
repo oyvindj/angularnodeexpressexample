@@ -1,0 +1,32 @@
+<div content-for="title">
+    <span>Ny Tid</span>
+</div>
+
+
+<div class="scrollable">
+    <div class="scrollable-content container section">
+
+        <form action="" id="" ng-submit="login()">
+
+            <div bs-panel title="">
+                <input type="text" ng-model="addtime.from" placeholder="Fra" label="" bs-input  autocorrect="off" autocapitalize="off" />
+                <input type="text" ng-model="addtime.to"   placeholder="Til" label="" bs-input autocorrect="off" autocapitalize="off" />
+
+                <div bs-panel class="form-actions">
+                    <!--<div content-for="navbarAction" duplicate>-->
+                        <button class="btn btn-primary">
+                            Lagre
+                        </button>
+                    <!--</div>-->
+                </div>
+            </div>
+        </form>
+        <div class="list-group">
+            <div class="list-group-item">
+                <p>Se oversikt over timer? <a href="/#/timelist">Timeliste</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+

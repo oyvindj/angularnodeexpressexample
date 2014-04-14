@@ -13,6 +13,7 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/',          {templateUrl: "home.html"})
   $routeProvider.when('/login',     {templateUrl: "templates/login.html"})
   $routeProvider.when('/register',  {templateUrl: "templates/register.html"})
+  $routeProvider.when('/addtime',   {templateUrl: "templates/addtime.html"})
   $routeProvider.when('/users',     {templateUrl: "templates/users.html"})
   $routeProvider.when('/scroll',    {templateUrl: "scroll.html"})
   $routeProvider.when('/toggle',    {templateUrl: "toggle.html"})
