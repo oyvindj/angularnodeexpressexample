@@ -6,9 +6,11 @@
 <div class="scrollable">
     <div class="scrollable-content container section">
 
-        <form action="" id="" ng-submit="login()">
+        <form action="" id="" ng-submit="addTime()">
 
             <div bs-panel title="">
+                <input type="date" ng-model="addtime.date" label="Dato" bs-input />
+                <select ng-model="addtime.project" ng-options="c.name for c in colors" label="Prosjekt" bs-input />
                 <input type="text" ng-model="addtime.from" placeholder="Fra" label="" bs-input  autocorrect="off" autocapitalize="off" />
                 <input type="text" ng-model="addtime.to"   placeholder="Til" label="" bs-input autocorrect="off" autocapitalize="off" />
 

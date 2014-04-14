@@ -239,6 +239,20 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
             console.log "Failed to delete user: " + err
         )
 
+    #addtime page
+    $scope.addtime = {}
+    $scope.colors = [
+      {name:'black', shade:'dark'},
+      {name:'white', shade:'light'},
+      {name:'red', shade:'dark'},
+      {name:'blue', shade:'dark'},
+      {name:'yellow', shade:'light'}
+    ]
+    $scope.addtime.project = $scope.colors[2]
+    $scope.addTime = () ->
+      console.log 'in addTime(), project: '
+      console.log $scope.addtime.project
+
     # from Angular mobile controller
     $rootScope.$on("$routeChangeStart", () ->
         $rootScope.loading = true
