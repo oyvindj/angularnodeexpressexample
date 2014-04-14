@@ -189,7 +189,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
         user = {username: $scope.login.username, password: $scope.login.password, rememberme: $scope.rememberme}
         $http.post(baseUrl + '/login', user).success((user) ->
             getLoginStatus()
-            window.location = '/'
+            #window.location = '/'
         ).error((err) ->
             console.log "Failed to login: " + err    
         )
