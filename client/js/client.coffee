@@ -180,6 +180,9 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
         getFoos()
       )
 
+    $scope.loginPage = () ->
+      $location.path('login')
+
     $scope.login = {}
     $scope.login.username = ''
     $scope.login.password = ''
