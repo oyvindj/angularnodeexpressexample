@@ -11,8 +11,8 @@
             <div bs-panel title="">
                 <input type="date" ng-model="addtime.date" label="Dato" bs-input />
                 <select ng-model="addtime.project" ng-options="c.name for c in colors" label="Prosjekt" bs-input />
-                <input type="text" ng-model="addtime.from" placeholder="Fra" label="" bs-input  autocorrect="off" autocapitalize="off" />
-                <input type="text" ng-model="addtime.to"   placeholder="Til" label="" bs-input autocorrect="off" autocapitalize="off" />
+                <input type="text" ng-model="addtime.from" placeholder="Fra" label="Starttid" bs-input  autocorrect="off" autocapitalize="off" />
+                <input type="text" ng-model="addtime.to"   placeholder="Til" label="Sluttid" bs-input autocorrect="off" autocapitalize="off" />
 
                 <div bs-panel class="form-actions">
                     <!--<div content-for="navbarAction" duplicate>-->
@@ -25,7 +25,7 @@
         </form>
         <div class="list-group">
             <div class="list-group-item">
-                <p>Se oversikt over timer? <a href="/#/timelist">Timeliste</a></p>
+                <p>Se oversikt over timer? <a href="/#/timeslots">Timeliste</a></p>
             </div>
         </div>
 

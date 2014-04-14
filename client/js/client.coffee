@@ -14,6 +14,7 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/login',     {templateUrl: "templates/login.html"})
   $routeProvider.when('/register',  {templateUrl: "templates/register.html"})
   $routeProvider.when('/addtime',   {templateUrl: "templates/addtime.html"})
+  $routeProvider.when('/timeslots',   {templateUrl: "templates/timeslots.html"})
   $routeProvider.when('/users',     {templateUrl: "templates/users.html"})
   $routeProvider.when('/scroll',    {templateUrl: "scroll.html"})
   $routeProvider.when('/toggle',    {templateUrl: "toggle.html"})
@@ -194,7 +195,8 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
         $http.post(baseUrl + '/login', user).success((user) ->
             getLoginStatus()
             #window.location = '/'
-            $location.path('')
+            getTimeslots()
+            $location.path('addtime')
         ).error((err) ->
             console.log "Failed to login: " + err    
         )
@@ -255,13 +257,78 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       dateString = date.getFullYear() + '-' + monthString + '-' + dayString
       console.log 'returning ' + dateString
       return dateString
+
+    toTime = (date) ->
+      hoursString = date.getHours().toString()
+      minutesString = date.getMinutes().toString()
+      if(hoursString.length == 1)
+          hoursString = '0' + hoursString
+      if(minutesString.length == 1)
+        minutesString = '0' + minutesString
+      return hoursString + '.' + minutesString
+
+
     $scope.addtime.project = $scope.colors[0]
     $scope.addtime.date = toDateInput(new Date())
     $scope.addtime.from = '9.00'
     $scope.addtime.to = ''
+
+    appendMinutes = (time) ->
+        if(time.indexOf('.') == -1)
+            time = time + '.00'
+        return time
+
     $scope.addTime = () ->
-      console.log 'in addTime(), project: '
-      console.log $scope.addtime.project.id
+      console.log 'in addTime()...'
+      date = $scope.addtime.date
+      project = $scope.addtime.project.id
+      from = $scope.addtime.from
+      to = $scope.addtime.to
+      from = appendMinutes(from)
+      to = appendMinutes(to)
+      data = {}
+      data.date = new Date(date)
+      data.project = project
+      console.log 'data.date: ' + data.date
+      console.log 'data.project: ' + data.project
+      fromHours = parseInt(from.split(".")[0])
+      fromMinutes = parseInt(from.split(".")[1])
+      toHours = parseInt(to.split(".")[0])
+      toMinutes = parseInt(to.split(".")[1])
+      fromDate = new Date(data.date.getTime())
+      fromDate.setHours(fromHours)
+      fromDate.setMinutes(fromMinutes)
+      toDate = new Date(data.date.getTime())
+      toDate.setHours(toHours)
+      toDate.setMinutes(toMinutes)
+      console.log 'fromDate: ' + fromDate
+      console.log 'toDate: ' + toDate
+      data.from = fromDate
+      data.to = toDate
+      console.log 'data.from: ' + data.from
+      console.log 'data.to: ' + data.to
+      data.year = fromDate.getFullYear()
+      $http.post(baseUrl + '/timeslots', data).success((postData) ->
+          getTimeslots()
+          $location.path('timeslots')
+      )
+
+    getTimeslots = ->
+      $http.get(baseUrl + '/timeslots').success((data) ->
+          $scope.message = data
+          $scope.timeslots = []
+          for item in data
+              console.log item
+              timeslot = new model.Timeslot()
+              timeslot.id = item._id
+              if(item.date)
+                timeslot.date = toDateInput(new Date(item.date))
+              timeslot.project = $scope.colors[item.project - 1]
+              timeslot.from = toTime(new Date(item.from))
+              timeslot.to = toTime(new Date(item.to))
+              console.log timeslot
+              $scope.timeslots.push timeslot
+      )
 
     # from Angular mobile controller
     $rootScope.$on("$routeChangeStart", () ->

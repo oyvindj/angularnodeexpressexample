@@ -3,7 +3,7 @@ persist = require './persist'
 
 autoservices = {}
 
-entities = ['Foo', 'Bar']
+entities = ['Foo', 'Bar', 'Timeslot']
 
 init = (app) ->
   for entity in entities
@@ -18,8 +18,10 @@ init = (app) ->
 
       app.post(serviceName, (req, res) ->
         console.log 'calling ' + serviceName
+        console.log 'req.body: '
+        console.log req.body
         name = req.body.name
-        data = {name: name}
+        data = req.body
         persist.insertDb(req, res, entity, data)
       )
 

@@ -7,5 +7,7 @@ app.factory('model', () ->
 
     model.User = class User
 
+    model.Timeslot = class Timeslot
+
     return model
 )

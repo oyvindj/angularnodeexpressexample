@@ -1,0 +1,14 @@
+<div class="list-group">
+    <div class="list-group-item">
+        <p>Legg til timer? <a href="/#/timeslots">Legg til tid</a></p>
+    </div>
+</div>
+<div class="scrollable">
+    <div class="scrollable-content">
+        <div class="list-group">
+            <a ng-repeat="item in timeslots" href="#" class="list-group-item">
+                {{item.date}} {{item.project.name}} {{item.from}}-{{item.to}} <i class="fa fa-chevron-right pull-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

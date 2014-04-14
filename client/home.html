@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="list-group-item media">
+      <div ng-show="isLoggedIn == true" class="list-group-item media">
         <div class="pull-left">
           <i class="fa fa-expand feature-icon"></i>
         </div>
@@ -44,12 +44,12 @@
         </div>
       </div>
 
-      <div class="list-group-item media">
+      <div ng-show="isLoggedIn == true" class="list-group-item media">
         <div class="pull-left">
           <i class="fa fa-stethoscope feature-icon"></i>
         </div>
         <div class="media-body">
-            <h3 class="media-heading">Submit an issue</h3>
+            <a href="/#/timeslots"><h3 class="media-heading">Se din timeliste</h3></a>
             Please submit any issue you'll find. It would help a lot!
         </div>
       </div>
