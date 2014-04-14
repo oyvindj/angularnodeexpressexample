@@ -55,9 +55,7 @@ to see this page in browser
     <div class="navbar navbar-app navbar-absolute-top">
 
         <div class="navbar-brand navbar-brand-center" yield-to="title">
-          <span>Timeføring</span>  <span> - </span> <span>Velkommen {{loggedInUser}} ({{loggedInEmail}})</span>
-            <a ng-show="isLoggedIn == false" href="#/login">Logg På</a>&nbsp;<a ng-show="isLoggedIn == false" href="#/register">Registrer</a>
-            <a ng-show="isLoggedIn == true" href="" ng-click="logout()">Logg Av</a>
+          <span>Timeføring</span>
         </div>
 
         <div class="btn-group pull-left">
@@ -66,11 +64,29 @@ to see this page in browser
           </div>
         </div>
 
+        <div ng-show="isLoggedIn == false" class="btn-group pull-right" >
+            <div ng-click="logon()" class="btn btn-navbar">
+                <span style="font-size: 10px;">Logg På</span>
+            </div>
+        </div>
+        <div ng-show="isLoggedIn == false" class="btn-group pull-right" >
+            <div ng-click="register()" class="btn btn-navbar">
+                <span style="font-size: 10px;">Registrer</span>
+            </div>
+        </div>
+        <div ng-show="isLoggedIn == true" class="btn-group pull-right" >
+            <div ng-click="logout()" class="btn btn-navbar">
+                 Logg Av
+            </div>
+        </div>
+
+<!--
         <div class="btn-group pull-right" yield-to="navbarAction">
           <div ng-click="toggle('rightSidebar')" class="btn btn-navbar">
             <i class="fa fa-comment"></i> Chat
           </div>
         </div>
+-->
     </div>
 
     <div class="navbar navbar-app navbar-absolute-bottom">

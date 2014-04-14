@@ -4,7 +4,12 @@
     <div class="list-group">
       <div class="list-group-item">
         <h1>Velkommen<br/>
-        <small>Dette er en enkel timeførings applikasjon</small>
+        <small ng-show="isLoggedIn == false">til Timeføring</small>
+        <small ng-show="isLoggedIn == true">
+            <span>{{loggedInUser}} ({{loggedInEmail}})</span>
+            &nbsp;
+            <a href="" ng-click="logout()">Logg Av</a>
+        </small>
         </h1>
       </div>
 
