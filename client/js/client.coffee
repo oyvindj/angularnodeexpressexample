@@ -242,16 +242,26 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
     #addtime page
     $scope.addtime = {}
     $scope.colors = [
-      {name:'black', shade:'dark'},
-      {name:'white', shade:'light'},
-      {name:'red', shade:'dark'},
-      {name:'blue', shade:'dark'},
-      {name:'yellow', shade:'light'}
+      {name:'BKK', id:1},
+      {name:'Egenopplæring', id:2},
     ]
-    $scope.addtime.project = $scope.colors[2]
+    toDateInput = (date) ->
+      monthString = (date.getMonth() + 1).toString()
+      if(monthString.length == 1)
+          monthString = '0' + monthString
+      dayString = date.getDate().toString()
+      if(dayString.length == 1)
+        dayString = '0' + dayString
+      dateString = date.getFullYear() + '-' + monthString + '-' + dayString
+      console.log 'returning ' + dateString
+      return dateString
+    $scope.addtime.project = $scope.colors[0]
+    $scope.addtime.date = toDateInput(new Date())
+    $scope.addtime.from = '9.00'
+    $scope.addtime.to = ''
     $scope.addTime = () ->
       console.log 'in addTime(), project: '
-      console.log $scope.addtime.project
+      console.log $scope.addtime.project.id
 
     # from Angular mobile controller
     $rootScope.$on("$routeChangeStart", () ->
