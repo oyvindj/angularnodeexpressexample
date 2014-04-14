@@ -7,7 +7,19 @@
         <small>Dette er en enkel timeførings applikasjon</small>
         </h1>
       </div>
-      <div class="list-group-item media">
+
+        <div ng-show="isLoggedIn == false" class="list-group-item media">
+            <div class="pull-left">
+                <i class="fa fa-tachometer feature-icon"></i>
+            </div>
+            <div class="media-body">
+                <a href="/#/login"><h3 class="media-heading">Eksisterende bruker? Logg på</h3></a>
+                Scroll, tap, navigate, test that everything is smooth
+            </div>
+        </div>
+
+
+      <div ng-show="isLoggedIn == false" class="list-group-item media">
         <div class="pull-left">
           <i class="fa fa-gamepad feature-icon"></i>
         </div>
@@ -16,18 +28,6 @@
             Open the sidebar and start testing features
         </div>
       </div>
-
-
-      <div class="list-group-item media">
-        <div class="pull-left">
-          <i class="fa fa-tachometer feature-icon"></i>
-        </div>
-        <div class="media-body">
-            <a href="/#/login"><h3 class="media-heading">Eksisterende bruker? Logg på</h3></a>
-            Scroll, tap, navigate, test that everything is smooth
-        </div>
-      </div>
-
 
       <div class="list-group-item media">
         <div class="pull-left">
