@@ -8,7 +8,7 @@
 
         <form action="" id="" ng-submit="register()">
 
-            <div bs-panel title="Registrering">
+            <div bs-panel title="">
                 <input type="text" ng-model="login.username"       label="Brukernavn" bs-input />
                 <input type="text" ng-model="login.email"          label="E-Post" bs-input />
                 <input type="text" ng-model="login.password"       label="Passord" bs-input />
@@ -21,7 +21,14 @@
                     </button>
                     <!--</div>-->
                 </div>
+            </div>
         </form>
+
+        <div class="list-group">
+            <div class="list-group-item">
+                <p>Har du allerede en bruker? <a href="/#/login">Logg på her</a></p>
+            </div>
+        </div>
 
     </div>
 </div>
