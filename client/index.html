@@ -28,26 +28,23 @@ to see this page in browser
 
   <link rel="stylesheet" href="examples.css" />
 
-  <script src="assets/js/angular.min.js"></script>
+  <script src="/lib/angular-1.2.14.js"></script>
+  <!--<script src="assets/js/angular.min.js"></script>-->
   <script src="assets/js/angular-route.min.js"></script>
   <script src="assets/js/mobile-angular-ui.min.js"></script>
   <script src="assets/js/mobile-angular-ui-touch-fastclick.min.js"></script>
   <script src="assets/js/mobile-angular-ui-scrollable-overthrow.min.js"></script>
 
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-48036416-1', 'mobileangularui.com');
-    ga('send', 'pageview');
-  </script>
-
-  <script src="examples.js"></script>
+  <script src="/lib/underscore-min.js"></script>
+  <script src="/lib/angular-cookies.min.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/testdata.js"></script>
+  <script src="js/client.js"></script>
+  <!--<script src="examples.js"></script>-->
 </head>
 
-<body ng-app="MobileAngularUiExamples" ng-controller="MainController">
+<!--<body ng-app="MobileAngularUiExamples" ng-controller="MainController">-->
+<body ng-app="clientApp" ng-controller="ClientCtrl">
 
   <div ng-include="'sidebar.html'" class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar"></div>
 
@@ -58,7 +55,9 @@ to see this page in browser
     <div class="navbar navbar-app navbar-absolute-top">
 
         <div class="navbar-brand navbar-brand-center" yield-to="title">
-          <span>Mobile Angular UI</span>
+          <span>Timeføring</span>  <span> - </span> <span>Velkommen {{loggedInUser}} ({{loggedInEmail}})</span>
+            <a ng-show="isLoggedIn == false" href="#/login">Logg På</a>&nbsp;<a ng-show="isLoggedIn == false" href="#/register">Registrer</a>
+            <a ng-show="isLoggedIn == true" href="" ng-click="logout()">Logg Av</a>
         </div>
 
         <div class="btn-group pull-left">

@@ -1,15 +1,27 @@
-<div class="register-panel" ng-controller="ClientCtrl" >
-    <div class="vertical-spacer-50"></div>
-    <div class="register-form">
-        <div class="register-message-panel"><span id="register-message">{{registerMessage}}</span></div>
-        <form ng-submit="register()">
-            <table>
-                <tr><td><input type="text" ng-model="username" autocorrect="off" autocapitalize="off" placeholder="Brukernavn" /></td></tr>
-                <tr><td><input type="text" ng-model="email" autocorrect="off" autocapitalize="off" placeholder="Email" /></td></tr>
-                <tr><td><input type="password" ng-model="password" autocorrect="off" autocapitalize="off" placeholder="Passord" /></td></tr>
-                <tr><td><input type="password" ng-model="verifyPassword" autocorrect="off" autocapitalize="off" placeholder="Verifiser Passord" /></td></tr>
-                <tr><td colspan="1" style="text-align: center"><input class="submit-button" type="submit"value="Registrer" /></td></tr>
-            </table>
+<div content-for="title">
+    <span>Registrering</span>
+</div>
+
+
+<div class="scrollable">
+    <div class="scrollable-content container section">
+
+        <form action="" id="" ng-submit="register()">
+
+            <div bs-panel title="Registrering">
+                <input type="text" ng-model="login.username"       label="Brukernavn" bs-input />
+                <input type="text" ng-model="login.email"          label="E-Post" bs-input />
+                <input type="text" ng-model="login.password"       label="Passord" bs-input />
+                <input type="text" ng-model="login.verifyPassword" label="Verifiser Passord" bs-input />
+
+                <div bs-panel class="form-actions">
+                    <!--<div content-for="navbarAction" duplicate>-->
+                    <button class="btn btn-primary">
+                        Registrer
+                    </button>
+                    <!--</div>-->
+                </div>
         </form>
+
     </div>
 </div>

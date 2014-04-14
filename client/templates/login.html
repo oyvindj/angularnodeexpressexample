@@ -1,14 +1,26 @@
-<div class="login-panel">
-    <div class="vertical-spacer-50"></div>
-    <div class="login-form">
-        <form ng-submit="login()" ng-controller="ClientCtrl">
-            <input id="Username" class="input-text-field" type="text" ng-model="username" autocorrect="off" autocapitalize="off" placeholder="Brukernavn"/>
-            <br/>
-            <input id="Password" class="input-text-field" type="password" ng-model="password" autocorrect="off" autocapitalize="off" placeholder="Passord"/>
-            <div><input class="submit-button" type="submit"value="Logg På" /></div>
-        </form>
-    </div>
-
+<div content-for="title">
+    <span>Pålogging</span>
 </div>
 
+
+<div class="scrollable">
+    <div class="scrollable-content container section">
+
+        <form action="" id="" ng-submit="login()">
+
+            <div bs-panel title="Pålogging">
+                <input type="text" ng-model="login.username"    label="Brukernavn" bs-input />
+                <input type="text" ng-model="login.password"    label="Passord" bs-input />
+
+                <div bs-panel class="form-actions">
+                    <!--<div content-for="navbarAction" duplicate>-->
+                        <button class="btn btn-primary">
+                            Logg på
+                        </button>
+                    <!--</div>-->
+                </div>
+        </form>
+
+    </div>
+</div>
 

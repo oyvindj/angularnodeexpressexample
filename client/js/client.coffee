@@ -1,89 +1,113 @@
-clientApp = angular.module('clientApp', ['ui.router', 'model'])
+clientApp = angular.module('clientApp', [
+  #'ui.router',
+  "ngRoute",
+  'mobile-angular-ui',
+  'mobile-angular-ui.touch',
+  'mobile-angular-ui.scrollable'
+  'model',
+  'testdata',
+])
 
-#set up routing
-clientApp.config(($stateProvider, $urlRouterProvider) ->
-    $urlRouterProvider.otherwise("/home")
-    $stateProvider
-      .state('root', {
-          url: ''
-          views: {
-            "menu": {
-              templateUrl: 'templates/menu.html'
-            },
-            "footer": {
-              templateUrl: "templates/footer.html"
-            },
-            "container@": {
-              templateUrl: 'templates/home.html'
-            }
-          }
-        })
-        .state('root.home', {
-            url: '/home'
-            views: {
-              "container@": {
-                templateUrl: 'templates/home.html'
-              }
-            }
-          })
-        .state('root.list', {
-            url: '/list'
-            views: {
-              "container@": {
-                templateUrl: 'templates/list.html'
-                controller: 'ListCtrl'
-              }
-            }
-        })
-        .state('root.list.item', {
-            url: '/:item'
-            templateUrl: 'templates/list.item.html'
-            controller: ($scope, $stateParams) ->
-                $scope.item = $stateParams.item
-        })
-        .state('root.profile', {
-            url: '/profile'
-            views: {
-              "container@": {
-                templateUrl: 'templates/profile.html'
-              }
-            }
-        })
-        .state('root.users', {
-            url: '/users'
-            views: {
-              "container@": {
-                templateUrl: 'templates/users.html'
-              }
-            }
-        })
-        .state('root.contactus', {
-          url: '/contactus'
-          views: {
-            "container@": {
-              templateUrl: 'templates/contactus.html'
-            }
-          }
-        })
-        .state('root.login', {
-            url: '/login'
-            views: {
-              "container@": {
-                templateUrl: 'templates/login.html'
-              }
-            }
-        })
-        .state('root.register', {
-            url: '/register'
-            views: {
-              "container@": {
-                templateUrl: 'templates/register.html'
-              }
-            }
-        })
+# angular mobile routing
+clientApp.config(($routeProvider, $locationProvider) ->
+  $routeProvider.when('/',          {templateUrl: "home.html"})
+  $routeProvider.when('/login',     {templateUrl: "templates/login.html"})
+  $routeProvider.when('/register',  {templateUrl: "templates/register.html"})
+  $routeProvider.when('/users',     {templateUrl: "templates/users.html"})
+  $routeProvider.when('/scroll',    {templateUrl: "scroll.html"})
+  $routeProvider.when('/toggle',    {templateUrl: "toggle.html"})
+  $routeProvider.when('/tabs',      {templateUrl: "tabs.html"})
+  $routeProvider.when('/accordion', {templateUrl: "accordion.html"})
+  $routeProvider.when('/overlay',   {templateUrl: "overlay.html"})
+  $routeProvider.when('/forms',     {templateUrl: "forms.html"})
+  $routeProvider.when('/carousel',  {templateUrl: "carousel.html"})
 )
 
-clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
+
+#set up routing
+#clientApp.config(($stateProvider, $urlRouterProvider) ->
+#    $urlRouterProvider.otherwise("/home")
+#    $stateProvider
+#      .state('root', {
+#          url: ''
+#          views: {
+#            "menu": {
+#              templateUrl: 'templates/menu.html'
+#            },
+#            "footer": {
+#              templateUrl: "templates/footer.html"
+#            },
+#            "container@": {
+#              templateUrl: 'templates/home.html'
+#            }
+#          }
+#        })
+#        .state('root.home', {
+#            url: '/home'
+#            views: {
+#              "container@": {
+#                templateUrl: 'templates/home.html'
+#              }
+#            }
+#          })
+#        .state('root.list', {
+#            url: '/list'
+#            views: {
+#              "container@": {
+#                templateUrl: 'templates/list.html'
+#                controller: 'ListCtrl'
+#              }
+#            }
+#        })
+#        .state('root.list.item', {
+#            url: '/:item'
+#            templateUrl: 'templates/list.item.html'
+#            controller: ($scope, $stateParams) ->
+#                $scope.item = $stateParams.item
+#        })
+#        .state('root.profile', {
+#            url: '/profile'
+#            views: {
+#              "container@": {
+#                templateUrl: 'templates/profile.html'
+#              }
+#            }
+#        })
+#        .state('root.users', {
+#            url: '/users'
+#            views: {
+#              "container@": {
+#                templateUrl: 'templates/users.html'
+#              }
+#            }
+#        })
+#        .state('root.contactus', {
+#          url: '/contactus'
+#          views: {
+#            "container@": {
+#              templateUrl: 'templates/contactus.html'
+#            }
+#          }
+#        })
+#        .state('root.login', {
+#            url: '/login'
+#            views: {
+#              "container@": {
+#                templateUrl: 'templates/login.html'
+#              }
+#            }
+#        })
+#        .state('root.register', {
+#            url: '/register'
+#            views: {
+#              "container@": {
+#                templateUrl: 'templates/register.html'
+#              }
+#            }
+#        })
+#)
+
+clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata) ->
     console.log 'starting controller...'
     $scope.message = null
     $scope.foos = []
@@ -142,6 +166,13 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
               $scope.users.push user
       )
 
+    $scope.invoice = {}
+    $scope.invoice.customer = ''
+
+    $scope.foo = () ->
+      console.log 'in foo...'
+      console.log 'customer: ' + $scope.invoice.customer
+
     $scope.deleteFoo = (id) ->
       $http.delete(baseUrl + '/foos/' + id).success((data) ->
         console.log 'client deleted foo with id ' + id + ', data: ' + data
@@ -149,8 +180,13 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
         getFoos()
       )
 
+    $scope.login = {}
+    $scope.login.username = ''
+    $scope.login.password = ''
     $scope.login = () ->
-        user = {username: $scope.username, password: $scope.password, rememberme: $scope.rememberme}
+        console.log 'login() called...'
+        console.log $scope.login.username
+        user = {username: $scope.login.username, password: $scope.login.password, rememberme: $scope.rememberme}
         $http.post(baseUrl + '/login', user).success((user) ->
             getLoginStatus()
             window.location = '/'
@@ -190,14 +226,34 @@ clientApp.controller('ClientCtrl', ($scope, $http, $location, model) ->
         )
 
     $scope.deleteUser = (id) ->
-      console.log 'deleting user...'
-      $http.delete(baseUrl + '/users/' + id).success((data) ->
-        #$scope.users = data
-        getUsers()
-      ).error((err) ->
-        console.log "Failed to delete user: " + err
-      )
+        console.log 'deleting user...'
+        $http.delete(baseUrl + '/users/' + id).success((data) ->
+            #$scope.users = data
+            getUsers()
+        ).error((err) ->
+            console.log "Failed to delete user: " + err
+        )
 
+    # from Angular mobile controller
+    $rootScope.$on("$routeChangeStart", () ->
+        $rootScope.loading = true
+    )
+    $rootScope.$on("$routeChangeSuccess", () ->
+        $rootScope.loading = false
+    )
+    scrollItems = [];
+
+    i = 0
+    while i < 100
+        scrollItems.push("Item " + i)
+        i++
+
+    $scope.scrollItems = scrollItems
+    $scope.userAgent =  navigator.userAgent
+    $scope.chatUsers = testdata.chatUsers
+
+
+    # setting some default data...
     getFoos()
     if($scope.isLoggedIn)
         getUsers()
