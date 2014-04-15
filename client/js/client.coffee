@@ -14,103 +14,23 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/login',     {templateUrl: "templates/login.html"})
   $routeProvider.when('/register',  {templateUrl: "templates/register.html"})
   $routeProvider.when('/addtime',   {templateUrl: "templates/addtime.html"})
-  $routeProvider.when('/timeslots',   {templateUrl: "templates/timeslots.html"})
+  $routeProvider.when('/timeslots', {templateUrl: "templates/timeslots.html"})
+  $routeProvider.when('/contactus', {templateUrl: "templates/contactus.html"})
+  $routeProvider.when('/aboutus',   {templateUrl: "templates/aboutus.html"})
   $routeProvider.when('/users',     {templateUrl: "templates/users.html"})
-  $routeProvider.when('/scroll',    {templateUrl: "scroll.html"})
-  $routeProvider.when('/toggle',    {templateUrl: "toggle.html"})
-  $routeProvider.when('/tabs',      {templateUrl: "tabs.html"})
-  $routeProvider.when('/accordion', {templateUrl: "accordion.html"})
-  $routeProvider.when('/overlay',   {templateUrl: "overlay.html"})
-  $routeProvider.when('/forms',     {templateUrl: "forms.html"})
-  $routeProvider.when('/carousel',  {templateUrl: "carousel.html"})
+  $routeProvider.when('/scroll',    {templateUrl: "templates/demo/scroll.html"})
+  $routeProvider.when('/toggle',    {templateUrl: "templates/demo/toggle.html"})
+  $routeProvider.when('/tabs',      {templateUrl: "templates/demo/tabs.html"})
+  $routeProvider.when('/accordion', {templateUrl: "templates/demo/accordion.html"})
+  $routeProvider.when('/overlay',   {templateUrl: "templates/demo/overlay.html"})
+  $routeProvider.when('/forms',     {templateUrl: "templates/demo/forms.html"})
+  $routeProvider.when('/carousel',  {templateUrl: "templates/demo/carousel.html"})
 )
-
-
-#set up routing
-#clientApp.config(($stateProvider, $urlRouterProvider) ->
-#    $urlRouterProvider.otherwise("/home")
-#    $stateProvider
-#      .state('root', {
-#          url: ''
-#          views: {
-#            "menu": {
-#              templateUrl: 'templates/menu.html'
-#            },
-#            "footer": {
-#              templateUrl: "templates/footer.html"
-#            },
-#            "container@": {
-#              templateUrl: 'templates/home.html'
-#            }
-#          }
-#        })
-#        .state('root.home', {
-#            url: '/home'
-#            views: {
-#              "container@": {
-#                templateUrl: 'templates/home.html'
-#              }
-#            }
-#          })
-#        .state('root.list', {
-#            url: '/list'
-#            views: {
-#              "container@": {
-#                templateUrl: 'templates/list.html'
-#                controller: 'ListCtrl'
-#              }
-#            }
-#        })
-#        .state('root.list.item', {
-#            url: '/:item'
-#            templateUrl: 'templates/list.item.html'
-#            controller: ($scope, $stateParams) ->
-#                $scope.item = $stateParams.item
-#        })
-#        .state('root.profile', {
-#            url: '/profile'
-#            views: {
-#              "container@": {
-#                templateUrl: 'templates/profile.html'
-#              }
-#            }
-#        })
-#        .state('root.users', {
-#            url: '/users'
-#            views: {
-#              "container@": {
-#                templateUrl: 'templates/users.html'
-#              }
-#            }
-#        })
-#        .state('root.contactus', {
-#          url: '/contactus'
-#          views: {
-#            "container@": {
-#              templateUrl: 'templates/contactus.html'
-#            }
-#          }
-#        })
-#        .state('root.login', {
-#            url: '/login'
-#            views: {
-#              "container@": {
-#                templateUrl: 'templates/login.html'
-#              }
-#            }
-#        })
-#        .state('root.register', {
-#            url: '/register'
-#            views: {
-#              "container@": {
-#                templateUrl: 'templates/register.html'
-#              }
-#            }
-#        })
-#)
 
 clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata) ->
     console.log 'starting controller...'
+    $scope.main = {}
+    $scope.main.isDemo = false
     $scope.message = null
     $scope.foos = []
     $scope.users = []
