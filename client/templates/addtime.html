@@ -6,7 +6,7 @@
 <div class="scrollable">
     <div class="scrollable-content container section">
 
-        <form action="" id="" ng-submit="addTime()">
+        <form action="" id="">
 
             <div bs-panel title="">
                 <input type="date" ng-model="addtime.date" label="Dato" bs-input />
@@ -16,10 +16,13 @@
 
                 <div bs-panel class="form-actions">
                     <!--<div content-for="navbarAction" duplicate>-->
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" ng-click="addTime()">
                             Lagre
                         </button>
-                    <!--</div>-->
+                        <button  ng-show="addtime.isEdit == true" class="btn" ng-click="deleteTimeslot(addtime.id)">
+                            Slett
+                        </button>
+                        <!--</div>-->
                 </div>
             </div>
         </form>

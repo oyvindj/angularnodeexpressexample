@@ -30,10 +30,11 @@ persist.getAllDb = (req, res, collectionName) ->
     )
   )
 
-persist.findByIdDb = (req, res, collectionName, id) ->
+persist.findByIdDb = (req, res, collectionName) ->
   id = req.params.id
   db.connect((exampleDb) ->
     db.findById(exampleDb, collectionName, id, (item) ->
+      console.log 'persist findByIdDb returning ' + collectionName + ' with id ' + id + ': ' + item
       res.status = 302
       res.send item
     )

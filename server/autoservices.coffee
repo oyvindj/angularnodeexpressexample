@@ -32,6 +32,10 @@ init = (app) ->
         persist.deleteDb(req, res, entity)
       )
 
+      app.get(serviceName, (res, req) ->
+        persist.findByIdDb(res, req, entity)
+      )
+
 autoservices.init = init
 module.exports = autoservices
 

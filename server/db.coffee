@@ -47,7 +47,9 @@ db.getAll = (db, collectionName, callback) ->
 
 db.findById = (db, collectionName, id, callback) ->
     collection = db.collection(collectionName)
-    item = collection.findOne({_id: id})
-    callback(item)
+    item = collection.findOne({_id: new mongodb.ObjectID(id)}, (err, item) ->
+      console.log 'db findById returning ' + collectionName + ' with id ' + id + ': ' + item
+      callback(item)
+    )
 
 module.exports = db 

@@ -250,6 +250,33 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
               $scope.timeslots.push timeslot
       )
 
+    getTimeslot = (id, callback) ->
+      $http.get(baseUrl + '/timeslots/' + id).success((data) ->
+        console.log 'got timeslot with id ' + id + ', data: ' + data
+        callback(data)
+      )
+
+
+    $scope.editTimeslot = (id) ->
+      console.log 'in edit timeslot, id: ' + id
+      getTimeslot(id, (timeslot) ->
+          $scope.addtime.date = toDateInput(new Date(timeslot.date))
+          $scope.addtime.project = $scope.colors[timeslot.project - 1]
+          $scope.addtime.from = toTime(new Date(timeslot.from))
+          $scope.addtime.to = toTime(new Date(timeslot.to))
+          $scope.addtime.isEdit = true
+          $scope.addtime.id = timeslot._id
+          $location.path('addtime')
+      )
+
+    $scope.deleteTimeslot = (id) ->
+      console.log 'deleting timeslot, id: ' + id
+      $http.delete(baseUrl + '/timeslots/' + id).success((data) ->
+        console.log 'client deleted timeslot with id ' + id
+        getTimeslots()
+        $location.path('timeslots')
+      )
+
     # from Angular mobile controller
     $rootScope.$on("$routeChangeStart", () ->
         $rootScope.loading = true
