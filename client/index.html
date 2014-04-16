@@ -42,10 +42,10 @@ to see this page in browser
   <script src="js/testdata.js"></script>
   <script src="js/client.js"></script>
   <script src="js/time.js"></script>
-  <!--<script src="examples.js"></script>-->
+  <script src="js/login.js"></script>
+  <script src="js/demo.js"></script>
 </head>
 
-<!--<body ng-app="MobileAngularUiExamples" ng-controller="MainController">-->
 <body ng-app="clientApp" ng-controller="ClientCtrl">
 
   <div ng-include="'sidebar.html'" class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar"></div>
@@ -76,14 +76,6 @@ to see this page in browser
                  Logg Av
             </div>
         </div>
-
-<!--
-        <div class="btn-group pull-right" yield-to="navbarAction">
-          <div ng-click="toggle('rightSidebar')" class="btn btn-navbar">
-            <i class="fa fa-comment"></i> Chat
-          </div>
-        </div>
--->
     </div>
 
     <div class="navbar navbar-app navbar-absolute-bottom">
@@ -102,8 +94,6 @@ to see this page in browser
         <ng-view class="app-content" ng-hide="loading"></ng-view>
       </div>
     </div>
-
-  
 
   </div>
 </body>

@@ -22,6 +22,18 @@ app.factory('utils', () ->
         minutesString = '0' + minutesString
       return hoursString + '.' + minutesString
 
+    utils.getLoginStatus = (scope, http)->
+      http.get('/user').success((user) ->
+        if(user)
+          scope.loggedInUser = user.username
+          scope.loggedInEmail = user.email
+          scope.isLoggedIn = true
+        else
+          scope.loggedInUser = 'Gjest'
+          scope.loggedInEmail = '-'
+          scope.isLoggedIn = false
+      )
+
     return utils
 )
 
