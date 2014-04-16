@@ -3,18 +3,21 @@ clientApp = angular.module('clientApp', [
   "ngRoute",
   'mobile-angular-ui',
   'mobile-angular-ui.touch',
-  'mobile-angular-ui.scrollable'
+  'mobile-angular-ui.scrollable',
+  'utils'
   'model',
   'testdata',
 ])
+
+#angular.module('clientApp.controllers', [])
 
 # angular mobile routing
 clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/',          {templateUrl: "home.html"})
   $routeProvider.when('/login',     {templateUrl: "templates/login.html"})
   $routeProvider.when('/register',  {templateUrl: "templates/register.html"})
-  $routeProvider.when('/addtime',   {templateUrl: "templates/addtime.html"})
-  $routeProvider.when('/timeslots', {templateUrl: "templates/timeslots.html"})
+  $routeProvider.when('/addtime',   {templateUrl: "templates/addtime.html", controller: 'AddTimeCtrl'})
+  $routeProvider.when('/timeslots', {templateUrl: "templates/timeslots.html", controller: 'TimeCtrl'})
   $routeProvider.when('/contactus', {templateUrl: "templates/contactus.html"})
   $routeProvider.when('/aboutus',   {templateUrl: "templates/aboutus.html"})
   $routeProvider.when('/users',     {templateUrl: "templates/users.html"})
@@ -42,10 +45,6 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
     $scope.rememberme = false
     $scope.isLogin = true
 
-    #baseUrl = 'https://angularnodeexpressexample-c9-oyvindj_1.c9.io'
-    #baseUrl = 'http://localhost:3000'
-    baseUrl = ''
-
     $scope.isLogin = () ->
         return "" + $scope.isLogin
     $scope.setLogin = (isLogin) ->
@@ -53,14 +52,14 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
 
     $scope.addFoo = () ->
         postData = {name: $scope.newName}
-        $http.post(baseUrl + '/foos', postData).success((data) ->
+        $http.post('/foos', postData).success((data) ->
             $scope.message2 = 'insert succesful...'
             $scope.newName = ''
             getFoos()
         )
         
     getFoos = ->
-        $http.get(baseUrl + '/foos').success((data) ->
+        $http.get('/foos').success((data) ->
             $scope.message = data
             $scope.foos = []
             for item in data
@@ -74,7 +73,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
         )
 
     getUsers = ->
-      $http.get(baseUrl + '/users').success((data) ->
+      $http.get('/users').success((data) ->
           $scope.message = data
           $scope.users = []
           for item in data
@@ -96,7 +95,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       console.log 'customer: ' + $scope.invoice.customer
 
     $scope.deleteFoo = (id) ->
-      $http.delete(baseUrl + '/foos/' + id).success((data) ->
+      $http.delete('/foos/' + id).success((data) ->
         console.log 'client deleted foo with id ' + id + ', data: ' + data
         #$scope.foos = data
         getFoos()
@@ -112,23 +111,22 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
         console.log 'login() called...'
         console.log $scope.login.username
         user = {username: $scope.login.username, password: $scope.login.password, rememberme: $scope.rememberme}
-        $http.post(baseUrl + '/login', user).success((user) ->
+        $http.post('/login', user).success((user) ->
             getLoginStatus()
             #window.location = '/'
-            getTimeslots()
             $location.path('addtime')
         ).error((err) ->
             console.log "Failed to login: " + err    
         )
 
     $scope.logout = () ->
-        $http.get(baseUrl + '/logout').success((data) ->
+        $http.get('/logout').success((data) ->
             getLoginStatus()
             $location.path('/')
         )
 
     getLoginStatus = ->
-        $http.get(baseUrl + '/user').success((user) ->
+        $http.get('/user').success((user) ->
             if(user)
                 $scope.loggedInUser = user.username
                 $scope.loggedInEmail = user.email
@@ -141,7 +139,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
 
     $scope.register = () ->
         user = {username: $scope.username, password: $scope.password, email: $scope.email}
-        $http.post(baseUrl + '/users', user).success((user) ->
+        $http.post('/users', user).success((user) ->
             getUsers()
             $scope.username = ''
             $scope.email = ''
@@ -154,128 +152,13 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
 
     $scope.deleteUser = (id) ->
         console.log 'deleting user...'
-        $http.delete(baseUrl + '/users/' + id).success((data) ->
+        $http.delete('/users/' + id).success((data) ->
             #$scope.users = data
             getUsers()
         ).error((err) ->
             console.log "Failed to delete user: " + err
         )
 
-    #addtime page
-    $scope.addtime = {}
-    $scope.colors = [
-      {name:'BKK', id:1},
-      {name:'Egenopplæring', id:2},
-    ]
-    toDateInput = (date) ->
-      monthString = (date.getMonth() + 1).toString()
-      if(monthString.length == 1)
-          monthString = '0' + monthString
-      dayString = date.getDate().toString()
-      if(dayString.length == 1)
-        dayString = '0' + dayString
-      dateString = date.getFullYear() + '-' + monthString + '-' + dayString
-      console.log 'returning ' + dateString
-      return dateString
-
-    toTime = (date) ->
-      hoursString = date.getHours().toString()
-      minutesString = date.getMinutes().toString()
-      if(hoursString.length == 1)
-          hoursString = '0' + hoursString
-      if(minutesString.length == 1)
-        minutesString = '0' + minutesString
-      return hoursString + '.' + minutesString
-
-
-    $scope.addtime.project = $scope.colors[0]
-    $scope.addtime.date = toDateInput(new Date())
-    $scope.addtime.from = '9.00'
-    $scope.addtime.to = ''
-
-    appendMinutes = (time) ->
-        if(time.indexOf('.') == -1)
-            time = time + '.00'
-        return time
-
-    $scope.addTime = () ->
-      console.log 'in addTime()...'
-      date = $scope.addtime.date
-      project = $scope.addtime.project.id
-      from = $scope.addtime.from
-      to = $scope.addtime.to
-      from = appendMinutes(from)
-      to = appendMinutes(to)
-      data = {}
-      data.date = new Date(date)
-      data.project = project
-      console.log 'data.date: ' + data.date
-      console.log 'data.project: ' + data.project
-      fromHours = parseInt(from.split(".")[0])
-      fromMinutes = parseInt(from.split(".")[1])
-      toHours = parseInt(to.split(".")[0])
-      toMinutes = parseInt(to.split(".")[1])
-      fromDate = new Date(data.date.getTime())
-      fromDate.setHours(fromHours)
-      fromDate.setMinutes(fromMinutes)
-      toDate = new Date(data.date.getTime())
-      toDate.setHours(toHours)
-      toDate.setMinutes(toMinutes)
-      console.log 'fromDate: ' + fromDate
-      console.log 'toDate: ' + toDate
-      data.from = fromDate
-      data.to = toDate
-      console.log 'data.from: ' + data.from
-      console.log 'data.to: ' + data.to
-      data.year = fromDate.getFullYear()
-      $http.post(baseUrl + '/timeslots', data).success((postData) ->
-          getTimeslots()
-          $location.path('timeslots')
-      )
-
-    getTimeslots = ->
-      $http.get(baseUrl + '/timeslots').success((data) ->
-          $scope.message = data
-          $scope.timeslots = []
-          for item in data
-              console.log item
-              timeslot = new model.Timeslot()
-              timeslot.id = item._id
-              if(item.date)
-                timeslot.date = toDateInput(new Date(item.date))
-              timeslot.project = $scope.colors[item.project - 1]
-              timeslot.from = toTime(new Date(item.from))
-              timeslot.to = toTime(new Date(item.to))
-              console.log timeslot
-              $scope.timeslots.push timeslot
-      )
-
-    getTimeslot = (id, callback) ->
-      $http.get(baseUrl + '/timeslots/' + id).success((data) ->
-        console.log 'got timeslot with id ' + id + ', data: ' + data
-        callback(data)
-      )
-
-
-    $scope.editTimeslot = (id) ->
-      console.log 'in edit timeslot, id: ' + id
-      getTimeslot(id, (timeslot) ->
-          $scope.addtime.date = toDateInput(new Date(timeslot.date))
-          $scope.addtime.project = $scope.colors[timeslot.project - 1]
-          $scope.addtime.from = toTime(new Date(timeslot.from))
-          $scope.addtime.to = toTime(new Date(timeslot.to))
-          $scope.addtime.isEdit = true
-          $scope.addtime.id = timeslot._id
-          $location.path('addtime')
-      )
-
-    $scope.deleteTimeslot = (id) ->
-      console.log 'deleting timeslot, id: ' + id
-      $http.delete(baseUrl + '/timeslots/' + id).success((data) ->
-        console.log 'client deleted timeslot with id ' + id
-        getTimeslots()
-        $location.path('timeslots')
-      )
 
     # from Angular mobile controller
     $rootScope.$on("$routeChangeStart", () ->

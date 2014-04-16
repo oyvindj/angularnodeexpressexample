@@ -30,5 +30,11 @@ app.factory('testdata', () ->
       { name: "Lee Norman", online: false },
       { name: "Ebony Rice", online: false }
     ]
+
+    testdata.colors = [
+      {name:'BKK', id:1},
+      {name:'Egenopplæring', id:2}
+    ]
+
     return testdata
 )

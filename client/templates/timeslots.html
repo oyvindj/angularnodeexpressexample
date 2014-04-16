@@ -6,7 +6,7 @@
 <div class="scrollable">
     <div class="scrollable-content">
         <div class="list-group">
-            <a ng-repeat="item in timeslots" href="/#/addtime" ng-click="editTimeslot(item.id)" class="list-group-item">
+            <a ng-repeat="item in timeslots" ng-click="editTimeslot(item.id)" class="list-group-item">
                 {{item.date}} {{item.project.name}} {{item.from}}-{{item.to}} <i class="fa fa-chevron-right pull-right"></i>
             </a>
         </div>
