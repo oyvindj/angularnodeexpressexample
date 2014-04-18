@@ -52,4 +52,11 @@ db.findById = (db, collectionName, id, callback) ->
       callback(item)
     )
 
-module.exports = db 
+db.findByField = (db, collectionName, fieldName, value, callback) ->
+  collection = db.collection(collectionName)
+  item = collection.findOne({fieldName: value}, (err, item) ->
+    console.log 'db findById returning ' + collectionName + ' with id ' + id + ': ' + item
+    callback(item)
+  )
+
+module.exports = db

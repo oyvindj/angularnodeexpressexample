@@ -31,13 +31,6 @@ angular.module('clientApp').controller('TimeCtrl', ($rootScope, $scope, $http, $
       $location.path('addtime')
     )
 
-  $scope.deleteTimeslot = (id) ->
-    console.log 'deleting timeslot, id: ' + id
-    $http.delete('/timeslots/' + id).success((data) ->
-      console.log 'client deleted timeslot with id ' + id
-      getTimeslots()
-      $location.path('timeslots')
-    )
 
   getTimeslots()
 
@@ -71,6 +64,13 @@ angular.module('clientApp').controller('AddTimeCtrl', ($rootScope, $scope, $http
       time = time + '.00'
     return time
 
+  $scope.deleteTimeslot = (id) ->
+    console.log 'deleting timeslot, id: ' + id
+    $http.delete('/timeslots/' + id).success((data) ->
+      console.log 'client deleted timeslot with id ' + id
+      $location.path('timeslots')
+    )
+
   $scope.addTime = () ->
     console.log 'in addTime()...'
     date = $scope.addtime.date
@@ -102,7 +102,6 @@ angular.module('clientApp').controller('AddTimeCtrl', ($rootScope, $scope, $http
     console.log 'data.to: ' + data.to
     data.year = fromDate.getFullYear()
     $http.post('/timeslots', data).success((postData) ->
-      getTimeslots()
       $location.path('timeslots')
     )
 

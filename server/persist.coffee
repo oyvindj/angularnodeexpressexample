@@ -40,5 +40,14 @@ persist.findByIdDb = (req, res, collectionName) ->
     )
   )
 
+persist.findByFieldDb = (req, res, collectionName, fieldName, value) ->
+  id = req.params.id
+  db.connect((exampleDb) ->
+    db.findByField(exampleDb, collectionName, fieldName, value, (item) ->
+      console.log 'persist findByIdDb returning ' + collectionName + ' with id ' + id + ': ' + item
+      res.status = 302
+      res.send item
+    )
+  )
 
 module.exports = persist

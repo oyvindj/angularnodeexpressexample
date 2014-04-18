@@ -1,5 +1,6 @@
 passport =  require 'passport'
 persist = require './persist'
+db = require './db'
 LocalStrategy = require('passport-local').Strategy
 
 users = [
@@ -8,10 +9,13 @@ users = [
 ]
 
 findByUsername = (username, callback) ->
-  for user in users
-    if (user.username == username)
-      return callback(null, user)
-  return callback(null, null)
+  db.connect((exampledb) ->
+    db.findByField(exampledb, 'User', 'username', username, (user) ->
+      if (user.username == username)
+        return callback(null, user)
+      return callback(null, null)
+    )
+  )
 
 findById = (id, callback) ->
   idx = id - 1
