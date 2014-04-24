@@ -20,7 +20,6 @@ init = (app) ->
         console.log 'calling ' + serviceName
         console.log 'req.body: '
         console.log req.body
-        name = req.body.name
         data = req.body
         persist.insertDb(req, res, entity, data)
       )

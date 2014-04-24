@@ -26,11 +26,13 @@ app.factory('utils', () ->
       http.get('/user').success((user) ->
         if(user)
           scope.loggedInUser = user.username
+          scope.loggedInUserId = user._id
           scope.loggedInEmail = user.email
           scope.isLoggedIn = true
         else
           scope.loggedInUser = 'Gjest'
           scope.loggedInEmail = '-'
+          scope.loggedInUserId = 'nouser'
           scope.isLoggedIn = false
       )
 

@@ -16,8 +16,8 @@ db.connect = (callback) ->
 
 db.insert = (db, collectionName, data, req, callback) ->
   if(req.user)
-    userid = req.user.id
-    data.userid = userid
+    userid = req.user._id
+    data.user_id = userid
   data.timestamp = (new Date()).getTime()
   collection = db.collection(collectionName)
   collection.insert(data, (err, names) ->
