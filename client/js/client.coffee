@@ -1,5 +1,4 @@
 clientApp = angular.module('clientApp', [
-  #'ui.router',
   "ngRoute",
   'mobile-angular-ui',
   'mobile-angular-ui.touch',
@@ -9,10 +8,6 @@ clientApp = angular.module('clientApp', [
   'testdata',
 ])
 
-
-#angular.module('clientApp.controllers', [])
-
-# angular mobile routing
 clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/',          {templateUrl: "home.html"})
   $routeProvider.when('/login',     {templateUrl: "templates/login.html", controller: 'LoginCtrl'})
@@ -32,7 +27,6 @@ clientApp.config(($routeProvider, $locationProvider) ->
 )
 
 clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
-    console.log 'starting controller...'
     $scope.userAgent =  navigator.userAgent
     $scope.main = {}
     $scope.main.isDemo = false
@@ -55,6 +49,5 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
     )
 
     utils.getLoginStatus($scope, $http)
-    console.log 'ending controller...'
 )
 

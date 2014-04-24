@@ -19,10 +19,16 @@ findByUsername = (username, callback) ->
 
 findById = (id, callback) ->
   idx = id - 1
-  if(users[idx])
-    callback(null, users[idx])
-  else
-    callback(new Error('User ' + id + ' does not exist'))
+  db.connect((exampledb) ->
+    db.findById(exampledb, 'User', id, (user) ->
+      console.log 'auth findById got back: ' + user
+      if(user)
+        callback(null, user)
+      else
+        callback(new Error('User ' + id + ' does not exist'))
+
+    )
+  )
 
 passport.serializeUser((user, done) ->
   done(null, user.id)

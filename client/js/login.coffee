@@ -39,12 +39,10 @@ angular.module('clientApp').controller('RegisterCtrl', ($rootScope, $scope, $htt
     ).error((err) ->
       console.log "Failed to add user: " + err
     )
-
 )
 
 angular.module('clientApp').controller('UserCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
   $scope.users = []
-
 
   getUsers = ->
     $http.get('/users').success((data) ->
@@ -61,7 +59,6 @@ angular.module('clientApp').controller('UserCtrl', ($rootScope, $scope, $http, $
             $scope.users.push user
     )
 
-
   $scope.deleteUser = (id) ->
       console.log 'deleting user...'
       $http.delete('/users/' + id).success((data) ->
@@ -72,6 +69,4 @@ angular.module('clientApp').controller('UserCtrl', ($rootScope, $scope, $http, $
 
   if($scope.isLoggedIn)
       getUsers()
-
-
 )

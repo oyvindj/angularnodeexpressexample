@@ -47,15 +47,19 @@ db.getAll = (db, collectionName, callback) ->
 
 db.findById = (db, collectionName, id, callback) ->
     collection = db.collection(collectionName)
-    item = collection.findOne({_id: new mongodb.ObjectID(id)}, (err, item) ->
+    collection.findOne({_id: new mongodb.ObjectID(id)}, (err, item) ->
       console.log 'db findById returning ' + collectionName + ' with id ' + id + ': ' + item
       callback(item)
     )
 
 db.findByField = (db, collectionName, fieldName, value, callback) ->
+  console.log 'db findByField getting ' + collectionName + ' with ' + fieldName + ": " + value
   collection = db.collection(collectionName)
-  item = collection.findOne({fieldName: value}, (err, item) ->
-    console.log 'db findById returning ' + collectionName + ' with id ' + id + ': ' + item
+  query = {}
+  query[fieldName] = value
+  collection.findOne(query, (err, item) ->
+    #console.log 'db findById returning ' + collectionName + ' with id ' + id + ': ' + item
+    console.log 'db findByField got back: ' + item
     callback(item)
   )
 
