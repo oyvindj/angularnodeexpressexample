@@ -47,6 +47,11 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       return Math.floor((Math.random() * 52) + 1)
 
     game = {}
+    game.result = {}
+    game.result.DRAW = 1
+    game.result.PLAYER_WON = 2
+    game.result.DEALER_WON = 3
+
 
     game.isTen = (card) ->
       if((card >= 5) && (card <= 20))
@@ -83,7 +88,8 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
 
     $scope.getDealerPoints = () ->
       #return getPoints(game.dealerCards)
-      return getLowestSoftPoints(game.dealerCards)
+      #return getLowestSoftPoints(game.dealerCards)
+      return getHighestPoints(game.dealerCards)
 
     game.ellevens = [1,2,3,4]
 
@@ -110,19 +116,27 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
           game.dealerStopped = true
           #$location.path('game')
 
-    $scope.getResult = ->
+    game.updateStatus = ->
+      console.log 'updating total...'
       if(!game.dealerStopped)
-        return 'Playing game...'
+        $scope.status = 'Playing game...'
       else if($scope.isDealerBust())
-        return 'Dealer busted. Player won. Game over'
+        game.totalScore = game.totalScore + 1
+        $scope.status = 'Dealer busted. Player won. Game over'
       else if($scope.isBust())
-        return 'Player busted. Dealer Won! Game over'
+        game.totalScore = game.totalScore - 1
+        $scope.status = 'Player busted. Dealer Won! Game over'
       else if ($scope.getDealerPoints() > $scope.getPlayerHighestPoints())
-        return 'Dealer won on points. Game over'
+        game.totalScore = game.totalScore - 1
+        $scope.status = 'Dealer won on points. Game over'
       else if($scope.getDealerPoints() == $scope.getPlayerHighestPoints())
-        return 'Game was a draw. Game over'
+        $scope.status = 'Game was a draw. Game over'
       else
-        return 'Player won on points. Game over'
+        game.totalScore = game.totalScore + 1
+        $scope.status = 'Player won on points. Game over'
+
+    $scope.getStatus = ->
+      return $scope.status
 
     getImages = (cards) ->
       images = []
@@ -153,6 +167,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       console.log 'player stopping...'
       game.playerStopped = true
       game.dealCardsToDealer()
+      game.updateStatus()
 
     $scope.double = ->
       game.playerDoubled = true
@@ -218,7 +233,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       game.newPlayerCard()
       if($scope.isBust())
         game.dealerStopped = true
-      $location.path('game')
+      game.updateStatus()
 
     $scope.showButtons = ->
       if(($scope.isBust()) || (game.playerStopped))
@@ -229,6 +244,14 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       if((!$scope.showButtons()) || (game.dealerStopped))
         return true
       return false
+
+    $scope.numberOfCardsDealt = ->
+      return game.dealtCards.length
+
+    game.totalScore = 0
+
+    $scope.getTotalScore = ->
+      return game.totalScore
 
     $scope.newGame = ->
       game.playerStopped = false
@@ -241,6 +264,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       game.newPlayerCard()
       game.newPlayerCard()
       game.newDealerCard()
+      game.updateStatus()
 
     $scope.newGame()
 
