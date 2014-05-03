@@ -80,3 +80,7 @@ table {
 .submit-button {
     -webkit-border-radius: 10px;
 }
+
+.player-image {
+    margin: 5px !important;
+}

@@ -1,0 +1,27 @@
+<div content-for="title">
+    <span>Nytt Spørsmål</span>
+</div>
+
+
+<div class="scrollable">
+    <div class="scrollable-content container section">
+
+        <form action="" id="" ng-submit="addQuestion()">
+
+            <div bs-panel title="">
+                <input type="text" autofocus="true" ng-model="newquiz.question" label="Spørsmål" bs-input autocorrect="off" autocapitalize="off" />
+                <input type="text" autofocus="true" ng-model="newquiz.answer" label="Svar" bs-input autocorrect="off" autocapitalize="off" />
+
+                <div bs-panel class="form-actions">
+                    <button class="btn btn-primary">
+                        Lagre og Legg til flere
+                    </button>
+                    <button class="btn btn-primary">
+                        Lagre og Ferdigstill Quiz
+                    </button>
+                </div>
+            </div>
+        </form>
+   </div>
+</div>
+

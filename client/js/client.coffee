@@ -24,12 +24,113 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/overlay',   {templateUrl: "templates/demo/overlay.html"})
   $routeProvider.when('/forms',     {templateUrl: "templates/demo/forms.html"}, controller: 'DemoCtrl')
   $routeProvider.when('/carousel',  {templateUrl: "templates/demo/carousel.html"})
+  $routeProvider.when('/quiz',      {templateUrl: "templates/quiz/quiz.html"})
+  $routeProvider.when('/newquiz',   {templateUrl: "templates/quiz/newgame.html"})
+  $routeProvider.when('/poker',     {templateUrl: "templates/poker/poker.html"})
+  $routeProvider.when('/game',      {templateUrl: "templates/poker/game.html"})
 )
 
 clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
     $scope.userAgent =  navigator.userAgent
     $scope.main = {}
     $scope.main.isDemo = false
+
+    # ========= to be moved to separate controller ===============
+
+    $scope.newgame = {}
+    $scope.newgame = () ->
+      console.log 'creating new poker game: ' + $scope.newquiz.name
+      $location.path('game')
+
+    $scope.pickRandom1to52 = () ->
+      return Math.floor((Math.random() * 52) + 1)
+
+    game = {}
+    game.dealerCards = []
+    game.playerCards = []
+    game.dealtCards = []
+    game.isTen = (card) ->
+      if((card >= 5) && (card <= 20))
+        return true
+      else
+        return false
+    game.isElleven = (card) ->
+      if(card <= 4)
+        return true
+      else
+        return false
+
+    game.getCardPoints = (card) ->
+      if(game.isElleven(card))
+        return 11
+      else if(game.isTen(card))
+        return 10
+      else if (card <= 24)
+        return 9
+      else if (card <= 28)
+        return 8
+      else if (card <= 32)
+        return 7
+      else if (card <= 36)
+        return 6
+      else if (card <= 40)
+        return 5
+      else if (card <= 44)
+        return 4
+      else if (card <= 48)
+        return 3
+      else if (card <= 52)
+        return 2
+
+    $scope.getPlayerPoints = () ->
+      points = 0
+      for card in game.playerCards
+        points = points + game.getCardPoints(card)
+      return points
+
+    game.ellevens = [1,2,3,4]
+    game.newPlayerCard = () ->
+      cardFound = false
+      newCard = -1
+      while(!cardFound)
+        newCard = $scope.pickRandom1to52()
+        if($.inArray(newCard, game.dealtCards))
+          cardFound = true
+
+      game.playerCards.push newCard
+      game.dealtCards.push newCard
+
+    $scope.getPlayerImages = () ->
+      images = []
+      for card in game.playerCards
+        image = card + '.png'
+        images.push image
+      return images
+
+    $scope.isBust = ->
+      if($scope.getPlayerPoints() > 21)
+        return true
+      else
+        return false
+
+    $scope.hit = () ->
+      console.log 'hit...'
+      game.newPlayerCard()
+      $location.path('game')
+
+    game.newPlayerCard()
+    game.newPlayerCard()
+
+    # ============================================================
+
+    # ========= to be moved to separate controller ===============
+
+    $scope.newquiz = {}
+    $scope.newquiz = () ->
+      console.log 'creating new quiz with name: ' + $scope.newquiz.name
+      $location.path('addquestion')
+
+    # ============================================================
 
     $scope.loginPage = () ->
       $location.path('login')

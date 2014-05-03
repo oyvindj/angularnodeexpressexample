@@ -1,0 +1,48 @@
+<div content-for="title">
+    <span>Spill</span>
+</div>
+
+
+<div class="scrollable">
+    <div class="scrollable-content container section">
+
+        <form action="" id="">
+
+            <div bs-panel title="Dealer Kort">
+                <img src="assets/images/cards/11.png" />
+            </div>
+            <div bs-panel title="Dine Kort">
+                <img src="assets/images/cards/1.png" />
+                <img src="assets/images/cards/2.png" />
+                <span>Poeng: Soft 12</span>
+                <span>Random: {{pickRandom1to52()}}</span>
+                <span>Images: {{getPlayerImages()}}</span>
+            </div>
+
+            <div bs-panel title="Dine Kort">
+                <img class="player-image"
+                     ng-repeat="image in getPlayerImages()"
+                     src="assets/images/cards/{{image}}" />
+                <span>Poeng: {{getPlayerPoints()}}</span>&nbsp;<span ng-show="isBust()" style="color: red;">BUSTED</span>
+            </div>
+
+            <div bs-panel title="">
+                <div bs-panel class="form-actions">
+                    <button class="btn btn-primary">
+                        Stopp
+                    </button>
+                    <button class="btn btn-primary"  ng-click="hit()">
+                        Hit
+                    </button>
+                    <button class="btn btn-primary">
+                        Split
+                    </button>
+                    <button class="btn btn-primary">
+                        Double
+                    </button>
+                </div>
+            </div>
+        </form>
+   </div>
+</div>
+
