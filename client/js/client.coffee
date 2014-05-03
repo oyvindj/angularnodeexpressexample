@@ -31,12 +31,13 @@ clientApp.config(($routeProvider, $locationProvider) ->
 )
 
 clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
+
     $scope.userAgent =  navigator.userAgent
     $scope.main = {}
     $scope.main.isDemo = false
 
     # ========= to be moved to separate controller ===============
-
+    console.log 'in quiz controller...'
     $scope.newgame = {}
     $scope.newgame = () ->
       console.log 'creating new poker game: ' + $scope.newquiz.name
@@ -46,9 +47,7 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       return Math.floor((Math.random() * 52) + 1)
 
     game = {}
-    game.dealerCards = []
-    game.playerCards = []
-    game.dealtCards = []
+
     game.isTen = (card) ->
       if((card >= 5) && (card <= 20))
         return true
@@ -82,46 +81,171 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
       else if (card <= 52)
         return 2
 
-    $scope.getPlayerPoints = () ->
-      points = 0
-      for card in game.playerCards
-        points = points + game.getCardPoints(card)
-      return points
+    $scope.getDealerPoints = () ->
+      #return getPoints(game.dealerCards)
+      return getLowestSoftPoints(game.dealerCards)
 
     game.ellevens = [1,2,3,4]
-    game.newPlayerCard = () ->
+
+    getCard = (cards) ->
       cardFound = false
       newCard = -1
       while(!cardFound)
         newCard = $scope.pickRandom1to52()
         if($.inArray(newCard, game.dealtCards))
           cardFound = true
-
-      game.playerCards.push newCard
+      cards.push newCard
       game.dealtCards.push newCard
 
-    $scope.getPlayerImages = () ->
+    game.newPlayerCard = () ->
+      getCard(game.playerCards)
+    game.newDealerCard = () ->
+      getCard(game.dealerCards)
+
+    game.dealCardsToDealer = ->
+      console.log 'dealing to dealer...'
+      while(!game.dealerStopped)
+        game.newDealerCard()
+        if($scope.getDealerPoints() >= 17)
+          game.dealerStopped = true
+          #$location.path('game')
+
+    $scope.getResult = ->
+      if(!game.dealerStopped)
+        return 'Playing game...'
+      else if($scope.isDealerBust())
+        return 'Dealer busted. Player won. Game over'
+      else if($scope.isBust())
+        return 'Player busted. Dealer Won! Game over'
+      else if ($scope.getDealerPoints() > $scope.getPlayerHighestPoints())
+        return 'Dealer won on points. Game over'
+      else if($scope.getDealerPoints() == $scope.getPlayerHighestPoints())
+        return 'Game was a draw. Game over'
+      else
+        return 'Player won on points. Game over'
+
+    getImages = (cards) ->
       images = []
-      for card in game.playerCards
+      for card in cards
         image = card + '.png'
         images.push image
       return images
 
+    $scope.getPlayerImages = () ->
+      return getImages(game.playerCards)
+
+    $scope.getDealerImages = () ->
+      return getImages(game.dealerCards)
+
     $scope.isBust = ->
-      if($scope.getPlayerPoints() > 21)
+      if(getLowestSoftPoints(game.playerCards) > 21)
         return true
       else
         return false
 
+    $scope.isDealerBust = ->
+      if(getLowestSoftPoints(game.dealerCards) > 21)
+        return true
+      else
+        return false
+
+    $scope.stop = ->
+      console.log 'player stopping...'
+      game.playerStopped = true
+      game.dealCardsToDealer()
+
+    $scope.double = ->
+      game.playerDoubled = true
+
+    $scope.split = ->
+      game.playerSplit = true
+
+    getNumberOfAces = (cards) ->
+      count = 0
+      for card in cards
+        if(game.isElleven(card))
+          count++
+      return count
+
+    getNumberOfPlayerAces = ->
+      return getNumberOfAces(game.playerCards)
+
+    getNumberOfPlayerAces = ->
+      return getNumberOfAces(game.dealerCards)
+
+    getLowestSoftPoints = (cards) ->
+      points = 0
+      for card in cards
+        if(!game.isElleven(card))
+          points = points + game.getCardPoints(card)
+      points = points + getNumberOfAces(cards)
+      return points
+
+    getHighestPoints = (cards) ->
+      points = 0
+      for card in cards
+        if(!game.isElleven(card))
+          points = points + game.getCardPoints(card)
+
+      aces = getNumberOfAces(cards)
+      if(aces > 0)
+        if((points + (aces - 1) + 11) <= 21)
+          points = points + 11 + (aces - 1)
+        else
+          points = points + aces
+      return points
+
+    $scope.getPlayerHighestPoints = ->
+      return getHighestPoints(game.playerCards)
+
+    $scope.getPlayerLowestSoftPoints = ->
+      return getLowestSoftPoints(game.playerCards)
+
+    $scope.getDealerHighestPoints = ->
+      return getHighestPoints(game.DealerCards)
+
+    hasDifferentHardPoints = (cards) ->
+      if(getLowestSoftPoints(cards) != getHighestPoints(cards))
+        return true
+      return false
+
+    $scope.playerHasDifferentHardPoints = ->
+      return hasDifferentHardPoints(game.playerCards)
+      #return true
+
     $scope.hit = () ->
       console.log 'hit...'
       game.newPlayerCard()
+      if($scope.isBust())
+        game.dealerStopped = true
       $location.path('game')
 
-    game.newPlayerCard()
-    game.newPlayerCard()
+    $scope.showButtons = ->
+      if(($scope.isBust()) || (game.playerStopped))
+        return false
+      return true
 
-    # ============================================================
+    $scope.showNewGameButton = ->
+      if((!$scope.showButtons()) || (game.dealerStopped))
+        return true
+      return false
+
+    $scope.newGame = ->
+      game.playerStopped = false
+      game.playerDoubled = false
+      game.playerSplit = false
+      game.dealerStopped = false
+      game.dealerCards = []
+      game.playerCards = []
+      game.dealtCards = []
+      game.newPlayerCard()
+      game.newPlayerCard()
+      game.newDealerCard()
+
+    $scope.newGame()
+
+
+  # ============================================================
 
     # ========= to be moved to separate controller ===============
 

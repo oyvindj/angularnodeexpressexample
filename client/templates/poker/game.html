@@ -8,30 +8,34 @@
 
         <form action="" id="">
 
+            <div bs-panel title="">
+                <span style="font-size: 16px;color: red;">{{getResult()}}</span>
+            </div>
+
             <div bs-panel title="Dealer Kort">
-                <img src="assets/images/cards/11.png" />
+                <img class="player-image"
+                     ng-repeat="image in getDealerImages()"
+                     src="assets/images/cards/{{image}}" />
+                <span>Dealer Poeng: {{getDealerPoints()}}</span>
+                <span ng-show="isDealerBust()" style="color: red;">BUSTED</span>
             </div>
-            <div bs-panel title="Dine Kort">
-                <img src="assets/images/cards/1.png" />
-                <img src="assets/images/cards/2.png" />
-                <span>Poeng: Soft 12</span>
-                <span>Random: {{pickRandom1to52()}}</span>
-                <span>Images: {{getPlayerImages()}}</span>
-            </div>
+
 
             <div bs-panel title="Dine Kort">
                 <img class="player-image"
                      ng-repeat="image in getPlayerImages()"
                      src="assets/images/cards/{{image}}" />
-                <span>Poeng: {{getPlayerPoints()}}</span>&nbsp;<span ng-show="isBust()" style="color: red;">BUSTED</span>
+                <span>Poeng: {{getPlayerLowestSoftPoints()}}</span><span ng-show="playerHasDifferentHardPoints()"> (Soft)</span>
+                <span ng-show="playerHasDifferentHardPoints()">{{getPlayerHighestPoints()}} (Hard)</span>
+                <span ng-show="isBust()" style="color: red;">BUSTED</span>
             </div>
 
-            <div bs-panel title="">
+            <div ng-show="showButtons()" bs-panel title="">
                 <div bs-panel class="form-actions">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" ng-click="stop()">
                         Stopp
                     </button>
-                    <button class="btn btn-primary"  ng-click="hit()">
+                    <button class="btn btn-primary" ng-click="hit()">
                         Hit
                     </button>
                     <button class="btn btn-primary">
@@ -39,6 +43,13 @@
                     </button>
                     <button class="btn btn-primary">
                         Double
+                    </button>
+                </div>
+            </div>
+            <div ng-show="showNewGameButton()" bs-panel title="">
+                <div bs-panel class="form-actions">
+                    <button class="btn btn-primary" ng-click="newGame()">
+                        Nytt Spill
                     </button>
                 </div>
             </div>
