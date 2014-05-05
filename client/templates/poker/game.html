@@ -1,5 +1,5 @@
 <div content-for="title">
-    <span>Spill</span>
+    <span>Spill Blackjack</span>
 </div>
 
 
@@ -9,9 +9,9 @@
         <form action="" id="">
 
             <div bs-panel title="">
-                <span style="font-size: 16px;color: red;">{{getStatus()}}</span><br/>
-                <span>Score: {{getTotalScore()}}</span>
-                <span>Number of cards dealt: {{numberOfCardsDealt()}}</span>
+                <span style="font-size: 16px;color: red;">{{getStatus()}}</span>
+                <span>Poeng: {{getTotalScore()}}</span>
+                <span>Kort utdelt: {{numberOfCardsDealt()}}</span>
             </div>
 
             <div bs-panel title="Dealer Kort">
@@ -20,6 +20,7 @@
                      src="assets/images/cards/{{image}}" />
                 <span>Dealer Poeng: {{getDealerPoints()}}</span>
                 <span ng-show="isDealerBust()" style="color: red;">BUSTED</span>
+                <span ng-show="isDealerBlackjack()" style="color: red;">BLACKJACK</span>
             </div>
 
 
@@ -29,7 +30,11 @@
                      src="assets/images/cards/{{image}}" />
                 <span>Poeng: {{getPlayerLowestSoftPoints()}}</span><span ng-show="playerHasDifferentHardPoints()"> (Soft)</span>
                 <span ng-show="playerHasDifferentHardPoints()">{{getPlayerHighestPoints()}} (Hard)</span>
+                <span>Innsats: {{game.bet}}</span>
                 <span ng-show="isBust()" style="color: red;">BUSTED</span>
+                <span ng-show="hasInsurance() && !insurancePaysOff()" style="color: red;">INSURANCE</span>
+                <span ng-show="insurancePaysOff()" style="color: red;">INSURANCE PAYS OFF</span>
+                <span ng-show="isPlayerBlackjack()" style="color: red;">BLACKJACK</span>
             </div>
 
             <div ng-show="showButtons()" bs-panel title="">
@@ -40,16 +45,21 @@
                     <button class="btn btn-primary" ng-click="hit()">
                         Hit
                     </button>
-                    <button class="btn btn-primary">
+                    <button disabled class="btn btn-primary" ng-click="split()">
                         Split
                     </button>
-                    <button class="btn btn-primary">
+                    <button ng-disabled="!isDoublePossible()" class="btn btn-primary" ng-click="double()">
                         Double
+                    </button>
+                    <button class="btn btn-primary" ng-disabled="!isInsurancePossible()" ng-click="insurance()">
+                        Forsikring
                     </button>
                 </div>
             </div>
             <div ng-show="showNewGameButton()" bs-panel title="">
                 <div bs-panel class="form-actions">
+                    <span>Innsats: </span>
+                    <input type="text" style="width: 50px;" autofocus="true" ng-model="game.bet" label="Innsats" bs-input autocorrect="off" autocapitalize="off" />
                     <button class="btn btn-primary" ng-click="newGame()">
                         Nytt Spill
                     </button>

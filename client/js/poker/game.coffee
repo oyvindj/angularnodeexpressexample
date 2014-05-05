@@ -54,8 +54,6 @@ angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $
     #return getLowestSoftPoints(game.dealerCards)
     return getHighestPoints(game.dealerCards)
 
-  game.ellevens = [1,2,3,4]
-
   getCard = (cards) ->
     cardFound = false
     newCard = -1
@@ -68,10 +66,7 @@ angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $
         #TODO - not correct, rewrite...
         cardFound = true
       else if(game.dealtCards.indexOf(newCard) == -1)
-        console.log 'found card: ' + newCard
         cardFound = true
-      else
-        console.log 'card already drawn: ' + newCard
     cards.push newCard
     game.dealtCards.push newCard
 
@@ -84,27 +79,56 @@ angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $
     console.log 'dealing to dealer...'
     while(!game.dealerStopped)
       game.newDealerCard()
+      if(game.dealerCards.length == 1)
+        if($scope.isPlayerBlackjack())
+          if(!((game.isElleven(game.dealerCards[0])) || (game.isTen(game.dealerCards[0]))))
+            game.dealerStopped = true
+            game.playerWinsOnBlackjack = true
+      else if(game.dealerCards.length == 2)
+        if($scope.isPlayerBlackjack())
+          if(!$scope.isDealerBlackjack())
+            game.dealerStopped = true
+            game.playerWinsOnBlackjack = true
+        else if(game.isElleven(game.dealerCards[0]))
+          if(game.hasInsurance)
+            if(game.isTen(game.dealerCards[1]))
+              game.insurancePaysOff = true
       if($scope.getDealerPoints() >= 17)
         game.dealerStopped = true
+
+  game.payWin = ->
+    game.totalScore = game.totalScore + $scope.game.bet
+    game.reset()
+  game.payWinBlackjack = ->
+    game.totalScore = game.totalScore + (1.5 * $scope.game.bet)
+    game.reset()
+  game.payLoss = ->
+    game.totalScore = game.totalScore - $scope.game.bet
+    game.reset()
+  game.reset = ->
+    $scope.game.bet = 1
 
   game.updateStatus = ->
     console.log 'updating total...'
     if(!game.dealerStopped)
-      $scope.status = 'Playing game...'
+      $scope.status = 'Spiller Blackjack...'
+    else if(game.playerWinsOnBlackjack)
+      game.payWinBlackjack()
+      $scope.status = 'Spiller vinner på Blackjack! Game over'
     else if($scope.isDealerBust())
-      game.totalScore = game.totalScore + 1
-      $scope.status = 'Dealer busted. Player won. Game over'
+      game.payWin()
+      $scope.status = 'Dealer er bust. Spiller vinner. Game over'
     else if($scope.isBust())
-      game.totalScore = game.totalScore - 1
-      $scope.status = 'Player busted. Dealer Won! Game over'
+      game.payLoss()
+      $scope.status = 'Spiller er bust. Dealer vinner! Game over'
     else if ($scope.getDealerPoints() > $scope.getPlayerHighestPoints())
-      game.totalScore = game.totalScore - 1
-      $scope.status = 'Dealer won on points. Game over'
+      game.payLoss()
+      $scope.status = 'Dealer vinner på poeng. Game over'
     else if($scope.getDealerPoints() == $scope.getPlayerHighestPoints())
-      $scope.status = 'Game was a draw. Game over'
+      $scope.status = 'Likt. Delt pott. Game over'
     else
-      game.totalScore = game.totalScore + 1
-      $scope.status = 'Player won on points. Game over'
+      game.payWin()
+      $scope.status = 'Spiller vinner på poeng. Game over'
 
   $scope.getStatus = ->
     return $scope.status
@@ -140,8 +164,20 @@ angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $
     game.dealCardsToDealer()
     game.updateStatus()
 
+  $scope.hit = () ->
+    console.log 'hit...'
+    game.newPlayerCard()
+    if($scope.isBust())
+      game.dealerStopped = true
+    game.updateStatus()
+
+  $scope.insurance = ->
+    console.log 'insurance...'
+    game.hasInsurance = true
+
   $scope.double = ->
     game.playerDoubled = true
+    $scope.game.bet = $scope.game.bet * 2
 
   $scope.split = ->
     game.playerSplit = true
@@ -195,16 +231,27 @@ angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $
       return true
     return false
 
+  isBlackjack = (cards) ->
+    if(cards.length == 2)
+      firstCard = cards[0]
+      secondCard = cards[1]
+      if(game.isTen(firstCard))
+        if(game.isElleven(secondCard))
+          return true
+      if(game.isElleven(firstCard))
+        if(game.isTen(secondCard))
+          return true
+    return false
+
+  $scope.isPlayerBlackjack = ->
+    return isBlackjack(game.playerCards)
+  $scope.isDealerBlackjack = ->
+    return isBlackjack(game.dealerCards)
+
+
   $scope.playerHasDifferentHardPoints = ->
     return hasDifferentHardPoints(game.playerCards)
   #return true
-
-  $scope.hit = () ->
-    console.log 'hit...'
-    game.newPlayerCard()
-    if($scope.isBust())
-      game.dealerStopped = true
-    game.updateStatus()
 
   $scope.showButtons = ->
     if(($scope.isBust()) || (game.playerStopped))
@@ -222,16 +269,40 @@ angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $
   $scope.getTotalScore = ->
     return game.totalScore
 
+  $scope.isInsurancePossible = ->
+    if(game.hasInsurance)
+      return false
+    else if(game.dealerCards.length == 1)
+      if(game.isElleven(game.dealerCards[0]))
+        return true
+    return false
+
+  $scope.isDoublePossible = ->
+    if((game.playerCards.length == 2) && (!game.playerDoubled))
+      return true
+    return false
+
+  $scope.hasInsurance = ->
+    return game.hasInsurance
+  $scope.insurancePaysOff = ->
+    return game.insurancePaysOff
+
   game.totalScore = 0
   game.dealtCards = []
   game.newDeck = ->
-    game.dealtCards = []
+  game.dealtCards = []
+  $scope.game = {}
+  $scope.game.bet = 1
 
   $scope.newGame = ->
+    console.log 'starting game wit bet: ' + $scope.game.bet
     game.playerStopped = false
     game.playerDoubled = false
     game.playerSplit = false
     game.dealerStopped = false
+    game.hasInsurance = false
+    game.insurancePaysOff = false
+    game.playerWinsOnBlackjack = false
     game.dealerCards = []
     game.playerCards = []
     if(game.dealtCards.length > 40)
