@@ -1,0 +1,28 @@
+<div content-for="title">
+    <span>Texas Hold'em Stats</span>
+</div>
+
+
+<div class="scrollable">
+    <div class="scrollable-content container section">
+
+        <form action="" id=""  ng-submit="addHand()">
+
+            <div bs-panel title="Game Info">
+                <input type="text" ng-model="stats.hand" label="Number of Players" bs-input autocorrect="off" autocapitalize="off" />
+                <input type="text" autofocus="true" ng-model="login.username"    label="Brukernavn" bs-input  autocorrect="off" autocapitalize="off" />
+                <input type="text" ng-model="invoice.customer"    label="Customer" bs-input />
+
+            </div>
+            <div bs-panel title="Hand">
+                <input type="text" autofocus="true" ng-model="stats.hand" label="Hand" bs-input autocorrect="off" autocapitalize="off" />
+
+            </div>
+            <div bs-panel class="form-actions">
+                <button class="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

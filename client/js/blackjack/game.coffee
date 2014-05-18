@@ -1,6 +1,5 @@
 angular.module('clientApp').controller('GameCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
-  # ========= to be moved to separate controller ===============
-  console.log 'in poker game controller...'
+  console.log 'in blackjack game controller...'
   $scope.newgame = {}
   $scope.newgame = () ->
     console.log 'creating new poker game: ' + $scope.newquiz.name

@@ -26,8 +26,9 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/carousel',  {templateUrl: "templates/demo/carousel.html"})
   $routeProvider.when('/quiz',      {templateUrl: "templates/quiz/quiz.html"})
   $routeProvider.when('/newquiz',   {templateUrl: "templates/quiz/newgame.html"})
-  $routeProvider.when('/poker',     {templateUrl: "templates/poker/poker.html"})
-  $routeProvider.when('/game',      {templateUrl: "templates/poker/game.html", controller: 'GameCtrl'})
+  $routeProvider.when('/blackjack', {templateUrl: "templates/blackjack/poker.html"})
+  $routeProvider.when('/game',      {templateUrl: "templates/blackjack/game.html", controller: 'GameCtrl'})
+  $routeProvider.when('/pokerstats',{templateUrl: "templates/pokerstats/stats.html", controller: 'PokerStatsCtrl'})
 )
 
 clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
