@@ -5,22 +5,21 @@
 
 <div class="scrollable">
     <div class="scrollable-content container section">
-
-        <form action="" id=""  ng-submit="addHand()">
-
+        <form action="" id=""">
             <div bs-panel title="Game Info">
-                <input type="text" ng-model="stats.hand" label="Number of Players" bs-input autocorrect="off" autocapitalize="off" />
-                <input type="text" autofocus="true" ng-model="login.username"    label="Brukernavn" bs-input  autocorrect="off" autocapitalize="off" />
-                <input type="text" ng-model="invoice.customer"    label="Customer" bs-input />
-
+                <span>Number of Players: </span><input type="text" ng-model="stats.hand" label="Number of Players" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
+                <span>Table Cards: </span><input type="text" ng-model="stats.tablecards" label="Number of Players" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
             </div>
             <div bs-panel title="Hand">
-                <input type="text" autofocus="true" ng-model="stats.hand" label="Hand" bs-input autocorrect="off" autocapitalize="off" />
-
+                <span>Hand: </span><input type="text" autofocus="true" ng-model="stats.hand" label="Hand" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
+                <span>Position: </span><input type="text" autofocus="true" ng-model="stats.position" label="Position" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
             </div>
             <div bs-panel class="form-actions">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" ng-click="addHand()">
                     Submit
+                </button>
+                <button class="btn btn-primary" ng-click="addHand()">
+                    New Hand
                 </button>
             </div>
         </form>

@@ -22,7 +22,7 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/tabs',      {templateUrl: "templates/demo/tabs.html"})
   $routeProvider.when('/accordion', {templateUrl: "templates/demo/accordion.html"})
   $routeProvider.when('/overlay',   {templateUrl: "templates/demo/overlay.html"})
-  $routeProvider.when('/forms',     {templateUrl: "templates/demo/forms.html"}, controller: 'DemoCtrl')
+  $routeProvider.when('/forms',     {templateUrl: "templates/demo/forms.html"})
   $routeProvider.when('/carousel',  {templateUrl: "templates/demo/carousel.html"})
   $routeProvider.when('/quiz',      {templateUrl: "templates/quiz/quiz.html"})
   $routeProvider.when('/newquiz',   {templateUrl: "templates/quiz/newgame.html"})
@@ -55,6 +55,11 @@ clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model,
             utils.getLoginStatus($scope, $http)
             $location.path('/')
         )
+
+    $scope.foo = () ->
+      console.log 'in foo()...'
+    $scope.invoice = {}
+    $scope.invoice.customer = ''
 
     $rootScope.$on("$routeChangeStart", () ->
         $rootScope.loading = true

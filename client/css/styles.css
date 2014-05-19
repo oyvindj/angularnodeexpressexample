@@ -84,3 +84,7 @@ table {
 .player-image {
     margin: 5px !important;
 }
+
+.panel {
+    margin-bottom: 5px;
+}
