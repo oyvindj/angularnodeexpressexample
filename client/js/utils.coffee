@@ -36,6 +36,21 @@ app.factory('utils', () ->
           scope.isLoggedIn = false
       )
 
+    utils.sortAsc = (a,b) ->
+      a = parseInt(a)
+      b = parseInt(b)
+      if(a > b)
+        return 1
+      else
+        if(a == b)
+          return 0
+        else
+          return -1
+
+    utils.sortAsc2 = (array) ->
+      sortedArray = $filter('orderBy')(array, '', false)
+      return sortedArray
+
     return utils
 )
 

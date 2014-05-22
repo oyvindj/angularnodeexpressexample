@@ -1,0 +1,20 @@
+<div class="scrollable" ng-controller="PokerStatResultsCtrl">
+    <div class="scrollable-content container section">
+        <div class="list-group">
+            <div class="list-group-item">
+                <h1>Stat Results<br/>
+                </h1>
+            </div>
+            <div class="list-group-item">
+                Number of Players: {{statresults.numberOfPlayers}}<br/>
+                Position: {{statresults.position}} <span ng-show="isDealer()" style="color: red">DEALER</span><br/>
+                Position Group: {{getPositionGroup()}}<br/>
+                Hand: {{statresults.hand}}<br/>
+                Table Cards: {{statresults.tablecards}}
+            </div>
+            <div class="list-group-item">
+                <span ng-show="hasHand()">Winning Chance: {{getWinningChance()}}</span><br/>
+            </div>
+        </div>
+    </div>
+</div>

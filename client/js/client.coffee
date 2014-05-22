@@ -6,6 +6,8 @@ clientApp = angular.module('clientApp', [
   'utils'
   'model',
   'testdata',
+  'tables',
+  'formulas'
 ])
 
 clientApp.config(($routeProvider, $locationProvider) ->

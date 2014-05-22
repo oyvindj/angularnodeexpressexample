@@ -47,13 +47,16 @@ to see this page in browser
   <script src="js/demo.js"></script>
   <script src="js/blackjack/game.js"></script>
   <script src="js/pokerstats/stats.js"></script>
+  <script src="js/pokerstats/statresults.js"></script>
+  <script src="js/pokerstats/tables.js"></script>
+  <script src="js/pokerstats/formulas.js"></script>
 </head>
 
 <body ng-app="clientApp" ng-controller="ClientCtrl">
 
   <div ng-include="'sidebar.html'" class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar"></div>
 
-  <div ng-include="'sidebarRight.html'" class="sidebar sidebar-right" toggleable parent-active-class="sidebar-right-in" id="rightSidebar"></div>
+  <div ng-include="'templates/pokerstats/statresults.html'" class="sidebar sidebar-right" toggleable parent-active-class="sidebar-right-in" id="rightSidebar"></div>
 
   <div class="app">
     <!-- Navbar -->
@@ -67,6 +70,12 @@ to see this page in browser
           <div ng-click="toggle('mainSidebar')" class="btn btn-navbar sidebar-toggle">
             <i class="fa fa-bars"></i> Meny
           </div>
+        </div>
+
+        <div class="btn-group pull-right" yield-to="navbarAction">
+            <div ng-click="toggle('rightSidebar')" class="btn btn-navbar">
+                <i class="fa fa-comment"></i> Right Menu
+            </div>
         </div>
 
         <div ng-show="isLoggedIn == false" class="btn-group pull-right" >
