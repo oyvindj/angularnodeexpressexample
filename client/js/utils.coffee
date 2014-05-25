@@ -47,6 +47,8 @@ app.factory('utils', () ->
         else
           return -1
 
+          return -1
+
     utils.sortAsc2 = (array) ->
       sortedArray = $filter('orderBy')(array, '', false)
       return sortedArray

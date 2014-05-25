@@ -3,11 +3,14 @@
 </div>
 
 
-<div class="scrollable">
+<div class="scrollable" ng-key-down="ctrl.eventInput($keyCode)" ng-controller="PokerStatsCtrl">
     <div class="scrollable-content container section">
         <form action="" id="">
             <div bs-panel title="Game Info">
                 <span>Number of Players: </span><input type="text" ng-model="stats.numberOfPlayers" label="Number of Players" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
+                <a href="#/pokerstats" ng-click="playersPlus()"><span style="font-size: 24px;">+</span></a>
+                &nbsp;/&nbsp;
+                <a href="#/pokerstats" ng-click="playersMinus()"><span style="font-size: 24px;">-</span></a>
                 <span>Table Cards: </span><input type="text"  focus="stats.focusTablecards" ng-model="stats.tablecards" label="Number of Players" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
             </div>
             <div bs-panel title="Hand">
@@ -16,15 +19,19 @@
                 <span>/{{stats.numberOfPlayers}}</span>
                 <span ng-show="isDealer()" style="color: red">DEALER</span>&nbsp;
                 <span>Players Left: </span><input type="text" ng-model="stats.playersLeft" label="Hand" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
-                <a href="#" ng-click="playersLeftPlus()"><span style="font-size: 18px;">+</span></a>/
-                <a href="#" ng-click="playersLeftMinus()"><span style="font-size: 18px;">-</span></a>
+                <a href="" ng-click="playersLeftPlus()"><span style="font-size: 24px;">+</span></a>/
+                <a href="" ng-click="playersLeftMinus()"><span style="font-size: 24px;">-</span></a>
             </div>
             <div bs-panel class="form-actions">
                 <button class="btn btn-primary" ng-click="addHand()">
                     Submit
                 </button>
                 <button class="btn btn-primary" ng-click="newHand()" focus="focusNewHand">
-                    New Hand
+                    New Hand (n)
+                </button>
+                <input type="hidden" on-keyup-fn="{keyup: 'newHand($event)'}">
+                <button class="btn btn-primary" ng-click="newSession()">
+                    New Session
                 </button>
             </div>
             <div class="list-group"  ng-controller="PokerStatResultsCtrl">
@@ -40,10 +47,15 @@
                 </div>
                 <div class="list-group-item">
                     Position Group: <span style="color: green;">{{getPositionGroup().toUpperCase()}}</span><br/>
+                    <div ng-show="hasHand()">Card Value: <span style="color: green;">{{getCardValue() | number: 1}} %</span></div>
                     <div ng-show="hasHand()">Winning Chance: <span style="color: green;">{{getWinningChance()}}</span></div><br/>
                     <span ng-show="isFold()" style="color: red">FOLD</span>
                     <span ng-show="isCheck()" style="color: orange">CHECK</span>
                     <span ng-show="isBet()" style="color: green">BET!!</span>
+                </div>
+                <div class="list-group-item">
+                    Cards Dealt: <span style="color: green;">{{getCardsDealt()}}</span><br/>
+                    Average Card Dealt: <span style="color: green;">{{getAverageCardDealt() | number: 1}}</span><br/>
                 </div>
                 <div class="list-group-item">
                     Average for 5 players: <span style="color: green;">{{calculateMedian(5)}}</span> ()<br/>

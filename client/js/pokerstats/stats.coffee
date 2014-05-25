@@ -32,6 +32,18 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
   $scope.stats.focusTablecards = false
   $scope.stats.focusNewHand = false
 
+  $scope.eventInput = (code) ->
+    console.log 'eventInput, code: ' + code
+    if(code == 78)
+      $scope.newHand()
+
+  $scope.playersPlus = ->
+    $scope.stats.numberOfPlayers++
+  $scope.playersMinus = ->
+    $scope.stats.numberOfPlayers--
+
+  $scope.newSession = ->
+    console.log 'new session...'
   $scope.addHand = ->
     console.log 'in addHand()...'
     $scope.stats.hand = $scope.stats.hand.toUpperCase()
@@ -42,7 +54,7 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
       $scope.stats.focusTablecards = true
     $rootScope.$broadcast('stats', $scope.stats)
 
-  $scope.newHand = ->
+  $scope.newHand = () ->
     console.log 'in newHand()...'
     position = parseInt($scope.stats.position.toString())
     numberOfPlayers = parseInt($scope.stats.numberOfPlayers.toString())

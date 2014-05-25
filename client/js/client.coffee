@@ -33,6 +33,22 @@ clientApp.config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/pokerstats',{templateUrl: "templates/pokerstats/stats.html", controller: 'PokerStatsCtrl'})
 )
 
+clientApp.directive('keyCapture', [() ->
+
+  return {
+    link: (scope, element, attrs, controller) ->
+      element.bind('keydown', (e) ->
+        console.log(e.keyCode)
+        console.log(clientApp)
+        console.log clientApp.controller
+        scope.$apply( ->
+          scope.eventInput(e.keyCode)
+        )
+      )
+    controller: 'PokerStatsCtrl'
+  }
+])
+
 clientApp.controller('ClientCtrl', ($rootScope, $scope, $http, $location, model, testdata, utils) ->
 
     $scope.userAgent =  navigator.userAgent
