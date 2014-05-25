@@ -160,16 +160,27 @@ angular.module('clientApp').controller('PokerStatResultsCtrl', ($rootScope, $sco
     return getCardValueForHand(hand)
 
   getCardValueForHand = (hand) ->
+    isSuited = false
     if(hand == '')
       return -2
+    else if(hand.length == 3)
+      hand = hand.substring(0, 2)
+      isSuited = true
+
     chances = tables.chances
     keys = Object.keys(tables.chances)
     chancesArray = []
+    keyValue = -1
     for key in keys
       item = []
+      value = chances[key][0]
+      if(key == hand)
+        keyValue = value
       item.push key
-      item.push chances[key][0]
+      item.push value
       chancesArray.push item
+    if(isSuited)
+      hand = tables.getHandWithValue(keyValue + 4)
     chancesArray = chancesArray.sort(sortChancesAsc)
     i = 0
     for chance in chancesArray
