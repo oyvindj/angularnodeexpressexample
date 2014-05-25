@@ -6,6 +6,11 @@ angular.module('clientApp').controller('PokerStatResultsCtrl', ($rootScope, $sco
   $scope.statresults.hand = ''
   cardsDealt = []
 
+  $rootScope.$on('newSession', (event, stats) ->
+    cardsDealt = []
+    newHand(stats)
+  )
+
   $rootScope.$on('stats', (event, stats) ->
     console.log 'statresults received stats: ' + stats.hand
     if(stats.hand != '')
@@ -19,11 +24,14 @@ angular.module('clientApp').controller('PokerStatResultsCtrl', ($rootScope, $sco
 
   $rootScope.$on('newHand', (event, stats) ->
     console.log 'statresults received newHand event: ' + stats
+    newHand(stats)
+  )
+
+  newHand = (stats) ->
     $scope.statresults.hand = ''
     $scope.statresults.tablecards = ''
     $scope.statresults.position = stats.position
     $scope.statresults.numberOfPlayers = stats.numberOfPlayers
-  )
 
   getCardsDealtValues = () ->
     values = []

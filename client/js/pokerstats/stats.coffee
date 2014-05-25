@@ -23,14 +23,17 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
   console.log 'in poker stats controller...'
   console.log 'chance: ' + tables.getChance(formulas.normalize('KA'), 2)
 
-  $scope.stats = {}
-  $scope.stats.hand = ''
-  $scope.stats.tablecards = ''
-  $scope.stats.numberOfPlayers = 5
-  $scope.stats.position = 2
-  $scope.stats.focusHand = true
-  $scope.stats.focusTablecards = false
-  $scope.stats.focusNewHand = false
+  init = ->
+    $scope.stats = {}
+    $scope.stats.hand = ''
+    $scope.stats.tablecards = ''
+    $scope.stats.numberOfPlayers = 5
+    $scope.stats.position = 2
+    $scope.stats.focusHand = true
+    $scope.stats.focusTablecards = false
+    $scope.stats.focusNewHand = false
+
+  init()
 
   $scope.eventInput = (code) ->
     console.log 'eventInput, code: ' + code
@@ -44,6 +47,9 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
 
   $scope.newSession = ->
     console.log 'new session...'
+    init()
+    $rootScope.$broadcast('newSession', $scope.stats)
+
   $scope.addHand = ->
     console.log 'in addHand()...'
     $scope.stats.hand = $scope.stats.hand.toUpperCase()

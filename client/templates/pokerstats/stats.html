@@ -40,13 +40,13 @@
                     </h4>
                 </div>
                 <div class="list-group-item">
-                    Number of Players: {{statresults.numberOfPlayers}}<br/>
-                    Position: {{statresults.position}} <span ng-show="isDealer()" style="color: red">DEALER</span><br/>
-                    Hand: {{statresults.hand}}<br/>
+                    Number of Players: {{statresults.numberOfPlayers}}&nbsp;
+                    Position: {{statresults.position}} <span ng-show="isDealer()" style="color: red">DEALER</span>&nbsp;
+                    Hand: {{statresults.hand}}&nbsp;
                     Table Cards: {{statresults.tablecards}}
                 </div>
                 <div class="list-group-item">
-                    Position Group: <span style="color: green;">{{getPositionGroup().toUpperCase()}}</span><br/>
+                    Position Group: <span style="color: green;">{{getPositionGroup().toUpperCase()}}</span>
                     <div ng-show="hasHand()">Card Value: <span style="color: green;">{{getCardValue() | number: 1}} %</span></div>
                     <div ng-show="hasHand()">Winning Chance: <span style="color: green;">{{getWinningChance()}}</span></div><br/>
                     <span ng-show="isFold()" style="color: red">FOLD</span>
@@ -54,17 +54,8 @@
                     <span ng-show="isBet()" style="color: green">BET!!</span>
                 </div>
                 <div class="list-group-item">
-                    Cards Dealt: <span style="color: green;">{{getCardsDealt()}}</span><br/>
+                    Cards Dealt: <span style="color: green;">{{getCardsDealt()}}</span>&nbsp;
                     Average Card Dealt: <span style="color: green;">{{getAverageCardDealt() | number: 1}}</span><br/>
-                </div>
-                <div class="list-group-item">
-                    Average for 5 players: <span style="color: green;">{{calculateMedian(5)}}</span> ()<br/>
-                    Average for 4 players: <span style="color: green;">{{calculateMedian(4)}}</span> ()<br/>
-                    Average for 3 players: <span style="color: green;">{{calculateMedian(3)}}</span> ()<br/>
-                    Average for 2 players: <span style="color: green;">{{calculateMedian(2)}}</span> (T8)<br/>
-                    Average for 6 players: <span style="color: green;">{{calculateMedian(6)}}</span> (<br/>
-                    Average for 7 players: <span style="color: green;">{{calculateMedian(7)}}</span> ()<br/>
-                    Average for 8 players: <span style="color: green;">{{calculateMedian(8)}}</span> ()<br/>
                 </div>
             </div>
         </form>
