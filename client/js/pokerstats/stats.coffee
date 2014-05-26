@@ -35,15 +35,40 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
 
   init()
 
+  $scope.fold = ->
+    $rootScope.$broadcast('fold', $scope.stats)
+    $scope.newHand()
+  $scope.winBeforeFlop = ->
+    $rootScope.$broadcast('winBeforeFlop', $scope.stats)
+    $scope.newHand()
+  $scope.winAfterFlop = ->
+    $rootScope.$broadcast('winAfterFlop', $scope.stats)
+    $scope.newHand()
+  $scope.looseBeforeFlop = ->
+    $rootScope.$broadcast('looseBeforeFlop', $scope.stats)
+    $scope.newHand()
+  $scope.looseAfterFlop = ->
+    $rootScope.$broadcast('looseAfterFlop', $scope.stats)
+    $scope.newHand()
+
   $scope.eventInput = (code) ->
     console.log 'eventInput, code: ' + code
     if(code == 78)
       $scope.newHand()
 
+  $scope.positionPlus = ->
+    $scope.stats.position++
+    $scope.stats.focusHand = true
+  $scope.positionMinus = ->
+    $scope.stats.position--
+    $scope.stats.focusHand = true
+
   $scope.playersPlus = ->
     $scope.stats.numberOfPlayers++
+    $scope.stats.focusHand = true
   $scope.playersMinus = ->
     $scope.stats.numberOfPlayers--
+    $scope.stats.focusHand = true
 
   $scope.newSession = ->
     console.log 'new session...'
@@ -57,8 +82,9 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
       $scope.stats.tablecards = $scope.stats.tablecards.toUpperCase()
       $scope.stats.focusNewHand = true
     else
-      $scope.stats.focusTablecards = true
+      $scope.stats.focusNewHand = true
     $rootScope.$broadcast('stats', $scope.stats)
+    $scope.stats.hand = ''
 
   $scope.newHand = () ->
     console.log 'in newHand()...'

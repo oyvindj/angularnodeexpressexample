@@ -5,11 +5,58 @@ angular.module('clientApp').controller('PokerStatResultsCtrl', ($rootScope, $sco
   $scope.statresults.position = 1
   $scope.statresults.hand = ''
   cardsDealt = []
+  foldCount = 0
+  wbfCount = 0
+  wafCount = 0
+  lbfCount = 0
+  lafCount = 0
 
   $rootScope.$on('newSession', (event, stats) ->
     cardsDealt = []
     newHand(stats)
   )
+
+  $rootScope.$on('fold', (event, stats) ->
+    foldCount++
+  )
+  $rootScope.$on('winBeforeFlop', (event, stats) ->
+    wbfCount++
+  )
+  $rootScope.$on('looseBeforeFlop', (event, stats) ->
+    lbfCount++
+  )
+  $rootScope.$on('winAfterFlop', (event, stats) ->
+    wafCount++
+  )
+  $rootScope.$on('looseAfterFlop', (event, stats) ->
+    lafCount++
+  )
+
+  $scope.getTotalPlayable = ->
+    count = 0
+    for hand in cardsDealt
+      if(getCardValueForHand(hand) > 55)
+        count++
+    return count
+
+  $scope.getPlayablePercentage = ->
+    return ($scope.getTotalPlayable() / $scope.getTotalHands()) * 100
+
+
+  $scope.getTotalHands = ->
+    return cardsDealt.length
+
+  $scope.getTotalPlayed = ->
+    return (wafCount + lafCount + wbfCount + lbfCount)
+
+  $scope.getPlayedPercentage = ->
+    return ($scope.getTotalPlayed() / $scope.getTotalHands()) * 100
+
+  $scope.getWinTotal = ->
+    wafCount + wbfCount
+
+  $scope.getWinPercentage = ->
+    return ($scope.getWinTotal() / $scope.getTotalPlayed()) * 100
 
   $rootScope.$on('stats', (event, stats) ->
     console.log 'statresults received stats: ' + stats.hand
@@ -26,6 +73,22 @@ angular.module('clientApp').controller('PokerStatResultsCtrl', ($rootScope, $sco
     console.log 'statresults received newHand event: ' + stats
     newHand(stats)
   )
+
+  $scope.getFoldCount = ->
+    return foldCount
+  $scope.getLbfCount = ->
+    return lbfCount
+  $scope.getLafCount = ->
+    return lafCount
+  $scope.getWbfCount = ->
+    return wbfCount
+  $scope.getWafCount = ->
+    return wafCount
+  $scope.getTotalBfCount = ->
+    return (wbfCount + lbfCount)
+  $scope.getTotalAfCount = ->
+    return (wafCount + lafCount)
+
 
   newHand = (stats) ->
     $scope.statresults.hand = ''
