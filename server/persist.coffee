@@ -5,7 +5,7 @@ persist = {}
 persist.insertDb = (req, res, collectionName, data) ->
   db.connect((exampleDb) ->
     db.insert(exampleDb, collectionName, data, req, (item) ->
-      res.status 201
+      res.statusCode = 201
       res.send item
     )
   )
@@ -25,7 +25,7 @@ persist.getAllDb = (req, res, collectionName) ->
       items = []
       for item in data
         items.push item
-      res.status = 302
+      res.statusCode = 302
       res.send items
     )
   )
@@ -35,7 +35,7 @@ persist.findByIdDb = (req, res, collectionName) ->
   db.connect((exampleDb) ->
     db.findById(exampleDb, collectionName, id, (item) ->
       console.log 'persist findByIdDb returning ' + collectionName + ' with id ' + id + ': ' + item
-      res.status = 302
+      res.statusCode = 302
       res.send item
     )
   )
@@ -45,7 +45,7 @@ persist.findByFieldDb = (req, res, collectionName, fieldName, value) ->
   db.connect((exampleDb) ->
     db.findByField(exampleDb, collectionName, fieldName, value, (item) ->
       console.log 'persist findByIdDb returning ' + collectionName + ' with id ' + id + ': ' + item
-      res.status = 302
+      res.statusCode = 302
       res.send item
     )
   )

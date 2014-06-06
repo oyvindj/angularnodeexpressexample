@@ -3,18 +3,23 @@ angular.module('clientApp').controller('LoginCtrl', ($rootScope, $scope, $http, 
   $scope.login.username = ''
   $scope.login.password = ''
   $scope.login.rememberme = false
+  $scope.loginFailed = false
   $scope.login = () ->
       console.log 'login() called...'
       console.log $scope.login.username
       user = {username: $scope.login.username, password: $scope.login.password, rememberme: $scope.rememberme}
       $http.post('/login', user).success((user) ->
+          console.log 'login successful: ' + user
+          console.log user
+          $scope.loginFailed = false
           $scope.login.username = ''
           $scope.login.password = ''
           $scope.login.rememberme = false
           utils.getLoginStatus($scope, $http)
           $location.path('addtime')
       ).error((err) ->
-          console.log "Failed to login: " + err
+        $scope.loginFailed = true
+        console.log "Failed to login: " + err
       )
 
 )
@@ -31,6 +36,7 @@ angular.module('clientApp').controller('RegisterCtrl', ($rootScope, $scope, $htt
     user = {username: $scope.register.username, password: $scope.register.password, email: $scope.register.email}
     $http.post('/users', user).success((user) ->
       #getUsers()
+      console.log 'register successful...'
       $scope.register.username = ''
       $scope.register.email = ''
       $scope.register.password = ''
