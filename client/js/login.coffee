@@ -41,8 +41,9 @@ angular.module('clientApp').controller('RegisterCtrl', ($rootScope, $scope, $htt
       $scope.register.email = ''
       $scope.register.password = ''
       $scope.register.verifyPassword = ''
-      $scope.register.message = 'Registration Successful'
+      $scope.register.message = 'Registrering OK'
     ).error((err) ->
+      $scope.register.message = 'Registrering Feileti'
       console.log "Failed to add user: " + err
     )
 )

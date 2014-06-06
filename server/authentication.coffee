@@ -3,11 +3,6 @@ persist = require './persist'
 db = require './db'
 LocalStrategy = require('passport-local').Strategy
 
-users = [
-  { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
-  { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com' }
-]
-
 findByUsername = (username, callback) ->
   db.connect((exampledb) ->
     db.findByField(exampledb, 'User', 'username', username, (user) ->
@@ -59,7 +54,7 @@ passport.use(new LocalStrategy((username, password, done) ->
 isLoggedIn = (req, res, next) ->
   if (req.isAuthenticated())
     return next();
-  res.statusCode = 401
+  res.statusCode = 403
   res.send('access denied')
 
 login = (req, res, next) ->
@@ -87,8 +82,6 @@ getUser = (req) ->
   return req.user
 
 init = (app) ->
-  #app.post('/login', login(), (req, res) -> res.redirect('/'))
-
   app.post('/login', (req, res, next) -> login(req, res, next))
 
   app.get('/logout', (req, res) ->
@@ -120,7 +113,6 @@ init = (app) ->
 authentication = {}
 
 authentication.init = init
-authentication.users = users
 authentication.findByUsername = findByUsername
 authentication.findById = findById
 authentication.login = login

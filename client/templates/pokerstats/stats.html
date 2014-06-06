@@ -11,16 +11,22 @@
                 <a href="#/pokerstats" ng-click="playersPlus()"><span style="font-size: 24px;">+</span></a>
                 &nbsp;/&nbsp;
                 <a href="#/pokerstats" ng-click="playersMinus()"><span style="font-size: 24px;">-</span></a>
+                <!--
                 <span>Table Cards: </span><input type="text"  focus="stats.focusTablecards" ng-model="stats.tablecards" label="Number of Players" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
+                -->
             </div>
             <div bs-panel title="Hand">
                 <span>Hand: </span><input type="text" focus="stats.focusHand" ng-model="stats.hand" label="Hand" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
                 <span>Position: </span><input type="text" ng-model="stats.position" label="Position" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
                 <span>/{{stats.numberOfPlayers}}</span>
+                <a href="#/pokerstats" ng-click="positionPlus()"><span style="font-size: 24px;">+</span></a>/
+                <a href="#/pokerstats" ng-click="positionMinus()"><span style="font-size: 24px;">-</span></a>
                 <span ng-show="isDealer()" style="color: red">DEALER</span>&nbsp;
+                <!--
                 <span>Players Left: </span><input type="text" ng-model="stats.playersLeft" label="Hand" autocorrect="off" autocapitalize="off" style="width: 60px;"/>
                 <a href="" ng-click="playersLeftPlus()"><span style="font-size: 24px;">+</span></a>/
                 <a href="" ng-click="playersLeftMinus()"><span style="font-size: 24px;">-</span></a>
+                -->
             </div>
             <div bs-panel class="form-actions">
                 <button class="btn btn-primary" ng-click="addHand()">
@@ -33,6 +39,24 @@
                 <button class="btn btn-primary" ng-click="newSession()">
                     New Session
                 </button>
+                <br/>
+                <div ng-show="stats.waitingForResult" style="background-color: greenyellow; padding: 5px; width: 300px;">
+                    <button class="btn btn-primary" ng-click="fold()">
+                        Fold
+                    </button>
+                    <button class="btn btn-primary" ng-click="winBeforeFlop()">
+                        WBF
+                    </button>
+                    <button class="btn btn-primary" ng-click="looseBeforeFlop()">
+                        LBF
+                    </button>
+                    <button class="btn btn-primary" ng-click="winAfterFlop()">
+                        WAF
+                    </button>
+                    <button class="btn btn-primary" ng-click="looseAfterFlop()">
+                        LAF
+                    </button>
+                </div>
             </div>
             <div class="list-group"  ng-controller="PokerStatResultsCtrl">
                 <div class="list-group-item">
@@ -42,12 +66,14 @@
                 <div class="list-group-item">
                     Number of Players: {{statresults.numberOfPlayers}}&nbsp;
                     Position: {{statresults.position}} <span ng-show="isDealer()" style="color: red">DEALER</span>&nbsp;
-                    Hand: {{statresults.hand}}&nbsp;
+                    Hand: <span style="background-color: greenyellow; padding: 5px; font-weight: bold"> {{statresults.hand}} </span>&nbsp;
+                    <!--
                     Table Cards: {{statresults.tablecards}}
+                    -->
                 </div>
                 <div class="list-group-item">
                     Position Group: <span style="color: green;">{{getPositionGroup().toUpperCase()}}</span>
-                    <div ng-show="hasHand()">Card Value: <span style="color: green;">{{getCardValue() | number: 1}} %</span></div>
+                    <div ng-show="hasHand()">Card Value: <span style="background-color: greenyellow; padding: 5px; font-weight: bold;">{{getCardValue() | number: 1}} %</span></div>
                     <div ng-show="hasHand()">Winning Chance: <span style="color: green;">{{getWinningChance()}}</span></div><br/>
                     <span ng-show="isFold()" style="color: red">FOLD</span>
                     <span ng-show="isCheck()" style="color: orange">CHECK</span>
@@ -55,7 +81,20 @@
                 </div>
                 <div class="list-group-item">
                     Cards Dealt: <span style="color: green;">{{getCardsDealt()}}</span>&nbsp;
-                    Average Card Dealt: <span style="color: green;">{{getAverageCardDealt() | number: 1}}</span><br/>
+                    Average Card Dealt: <span style="color: green;">{{getAverageCardDealt() | number: 1}} %</span><br/>
+                    Fold Count: {{getFoldCount()}}&nbsp;
+                    LBF: {{getLbfCount()}} / {{getTotalBfCount()}}&nbsp;
+                    WBF: {{getWbfCount()}} / {{getTotalBfCount()}}&nbsp;
+                    LAF: {{getLafCount()}} / {{getTotalAfCount()}}&nbsp;
+                    WAF: {{getWafCount()}} / {{getTotalAfCount()}}
+                </div>
+                <div class="list-group-item">
+                    Played Hands: {{getTotalPlayed()}} / {{getTotalHands()}}&nbsp;
+                    Played Percentage: <span style="background-color: #ffff00;font-weight: bold;">{{getPlayedPercentage() | number: 1}} %</span><br/>
+                    Playable: {{getTotalPlayable()}} / {{getTotalHands()}}&nbsp;
+                    Playable Percentage:  <span style="color: green;">{{getPlayablePercentage() | number: 1}} %</span>&nbsp;
+                    Wins: {{getWinTotal()}} / {{getTotalPlayed()}}&nbsp;
+                    Win Percentage:  <span style="background-color: #ffff00;font-weight: bold;">{{getWinPercentage() | number: 1}} %</span>&nbsp;
                 </div>
             </div>
         </form>

@@ -32,18 +32,49 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
     $scope.stats.focusHand = true
     $scope.stats.focusTablecards = false
     $scope.stats.focusNewHand = false
+    $scope.stats.waitingForResult = false
 
   init()
+
+  $scope.fold = ->
+    $scope.stats.waitingForResult = false
+    $rootScope.$broadcast('fold', $scope.stats)
+    $scope.newHand()
+  $scope.winBeforeFlop = ->
+    $scope.stats.waitingForResult = false
+    $rootScope.$broadcast('winBeforeFlop', $scope.stats)
+    $scope.newHand()
+  $scope.winAfterFlop = ->
+    $scope.stats.waitingForResult = false
+    $rootScope.$broadcast('winAfterFlop', $scope.stats)
+    $scope.newHand()
+  $scope.looseBeforeFlop = ->
+    $scope.stats.waitingForResult = false
+    $rootScope.$broadcast('looseBeforeFlop', $scope.stats)
+    $scope.newHand()
+  $scope.looseAfterFlop = ->
+    $scope.stats.waitingForResult = false
+    $rootScope.$broadcast('looseAfterFlop', $scope.stats)
+    $scope.newHand()
 
   $scope.eventInput = (code) ->
     console.log 'eventInput, code: ' + code
     if(code == 78)
       $scope.newHand()
 
+  $scope.positionPlus = ->
+    $scope.stats.position++
+    $scope.stats.focusHand = true
+  $scope.positionMinus = ->
+    $scope.stats.position--
+    $scope.stats.focusHand = true
+
   $scope.playersPlus = ->
     $scope.stats.numberOfPlayers++
+    $scope.stats.focusHand = true
   $scope.playersMinus = ->
     $scope.stats.numberOfPlayers--
+    $scope.stats.focusHand = true
 
   $scope.newSession = ->
     console.log 'new session...'
@@ -57,8 +88,10 @@ angular.module('clientApp').controller('PokerStatsCtrl', ($rootScope, $scope, $h
       $scope.stats.tablecards = $scope.stats.tablecards.toUpperCase()
       $scope.stats.focusNewHand = true
     else
-      $scope.stats.focusTablecards = true
+      $scope.stats.focusNewHand = true
+    $scope.stats.waitingForResult = true
     $rootScope.$broadcast('stats', $scope.stats)
+    $scope.stats.hand = ''
 
   $scope.newHand = () ->
     console.log 'in newHand()...'
