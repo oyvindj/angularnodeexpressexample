@@ -31,7 +31,7 @@ findById = (id, callback) ->
   )
 
 passport.serializeUser((user, done) ->
-  done(null, user.id)
+  done(null, user._id)
 )
 passport.deserializeUser((id, done) ->
   findById(id, (err, user) ->
@@ -43,11 +43,15 @@ passport.use(new LocalStrategy((username, password, done) ->
   console.log 'in doLogin...'
   findByUsername(username, (err, user) ->
     if (err)
+      console.log 'login error: ' + err
       return done(err)
     if (!user)
+      console.log 'unknown user: ' + username
       return done(null, false, { message: 'Unknown user ' + username })
     if (user.password != password)
+      console.log 'invalid password for user: ' + username
       return done(null, false, { message: 'Invalid password' })
+    console.log 'use ' + username + ' logged in '
     return done(null, user)
   )
 ))
@@ -55,10 +59,25 @@ passport.use(new LocalStrategy((username, password, done) ->
 isLoggedIn = (req, res, next) ->
   if (req.isAuthenticated())
     return next();
+  res.statusCode = 401
   res.send('access denied')
 
-login = () ->
-  passport.authenticate('local', {failureRedirect: '/'})
+login = (req, res, next) ->
+  passport.authenticate('local', (err, user, info) ->
+    if(err)
+      res.statusCode = 501
+      res.send 'system error during login'
+    if(!user)
+      res.statusCode = 403
+      res.send 'login failed'
+    else
+      res.statusCode = 200
+      req.logIn(user, (err) ->
+        if (err)
+          return next(err)
+      )
+      res.send 'login ok'
+  )(req, res, next)
 
 logout = (req, res) ->
   req.logout()
@@ -68,7 +87,9 @@ getUser = (req) ->
   return req.user
 
 init = (app) ->
-  app.post('/login', login(), (req, res) -> res.redirect('/'))
+  #app.post('/login', login(), (req, res) -> res.redirect('/'))
+
+  app.post('/login', (req, res, next) -> login(req, res, next))
 
   app.get('/logout', (req, res) ->
     logout(req, res)

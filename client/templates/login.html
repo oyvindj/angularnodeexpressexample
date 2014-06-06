@@ -6,6 +6,11 @@
 <div class="scrollable">
     <div class="scrollable-content container section">
 
+        <div ng-show="loginFailed" class="list-group">
+            <div class="list-group-item">
+                <p style="font-size: 20px;color: red">Pålogging feilet. Prøv igjen</a></p>
+            </div>
+        </div>
         <form action="" id="" ng-submit="login()">
 
             <div bs-panel title="">
